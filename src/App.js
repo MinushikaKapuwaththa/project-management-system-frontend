@@ -1,11 +1,34 @@
 import React from "react";
 import "./App.css";
-import LoginPage from "./pages/LoginPage/LoginPage";
+import Navbar from './layouts/Navbar/NavbarComponent';
+import Home from './pages/home/Home';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Customer from './pages/customers/Customer';
+import Ourteam from './pages/ourteam/Ourteam';
+import Companies from './pages/companies/Companies';
+import People from './pages/people/People';
+import Create from './pages/create/Create';
+import Projects from './pages/project/Projects';
 
 function App() {
   return (
     <div className="App">
-      <LoginPage/>
+      
+      <Router>
+     
+      <Navbar />
+      <Switch>
+       
+        <Route path='/' exact component={Home} />
+        <Route path='/customer' component={Customer} />
+        <Route path='/projects' component={Projects} />
+        <Route path='/ourteam' component={Ourteam} />
+        <Route path='/create' component={Create} />
+        <Route path='/companies' component={Companies} />
+        <Route path='/people' component={People} />
+      </Switch>
+    </Router>
+    
     </div>
   );
 }
