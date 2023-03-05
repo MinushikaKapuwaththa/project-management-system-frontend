@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 
-import { Link } from "react-router-dom";
-import "./Navbar.css";
-import Dropdown from "./Dropdown";
 import {Navbar, Nav, Button} from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+
+
+
 
 function NavbarComponent() {
   const [click, setClick] = useState(false);
@@ -28,7 +30,6 @@ function NavbarComponent() {
     }
   };
 
-  return (
     
       // <nav className="navbar">
       //   <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
@@ -84,36 +85,44 @@ function NavbarComponent() {
       //   </ul>
       //   <Button />
       // </nav>
-  
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <Link class="navbar-brand" to="/">Navbar</Link>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <Link class="nav-link" to="/companies">Companies </Link>
-      </li>
-      <li class="nav-item">
-        <Link class="nav-link" to="/create">Create</Link>
-      </li>
-      <li class="nav-item">
-        <Link class="nav-link" to="/customer">Customers</Link>
-      </li>
-      <li class="nav-item">
-        <Link class="nav-link" to="/ourteam">OurTeam</Link>
-      </li>
-      <li class="nav-item">
-        <Link class="nav-link" to="/people">People</Link>
-      </li>
-      <li class="nav-item">
-        <Link class="nav-link" to="/projects">Project</Link>
-      </li>
-    </ul>
-  </div>
-</nav>
+
+     
+  return (
+    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+      <Container fluid>
+        <Navbar.Brand href="/">G3 Technology</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            
+          
+            
+          </Nav>
+          <Nav>
+          <Nav.Link href="/">Dashboard</Nav.Link>
+          <Nav.Link href="/projects">Project</Nav.Link>
+          
+          <NavDropdown title="Customer" id="collasible-nav-dropdown">
+              <NavDropdown.Item href="/companies">Companies</NavDropdown.Item>
+              <NavDropdown.Item href="/people">
+                People
+              
+              </NavDropdown.Item>
+            </NavDropdown>
+            <Nav.Link href="/ourteam">Our Team</Nav.Link>
+            
+            
+          </Nav>
+          <Nav>
+          <Button href="/create">Create</Button>{' '}
+          
+            
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
 
 export default NavbarComponent;
+
