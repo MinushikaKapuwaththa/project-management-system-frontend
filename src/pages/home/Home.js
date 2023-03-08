@@ -7,7 +7,16 @@ export default function Home() {
       <div>
     <h1>HOME PAGE</h1>
     <p> test project</p>
-    </div>
+    
+ 
+ 
+
+</div>
+
+
+
+
+
     ) ;
 
   }
