@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-
 import {Navbar, Nav, Button} from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-
-
+import Profile from "./Profile";
 
 
 function NavbarComponent() {
@@ -110,14 +108,16 @@ function NavbarComponent() {
               </NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href="/ourteam">Our Team</Nav.Link>
-            
-            
+             
           </Nav>
-          <Nav>
-          <Button href="/create">Create</Button>{' '}
-          
-            
-          </Nav>
+
+        <Nav>
+          <Nav className="user">
+            <img src="public/images.png" alt=""/>
+           </Nav>
+            <Profile/>
+        </Nav> 
+
         </Navbar.Collapse>
       </Container>
     </Navbar>

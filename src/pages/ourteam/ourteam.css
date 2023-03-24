@@ -1,9 +1,72 @@
 .Ourteam {
   
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: #fff;
-    font-size: 100px;
-  }
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #B0E0E6E6;
+  font-size: 100px;
+}
+
+.addmember {
+  margin-left: auto;
+} 
+
+/* .Customer{
+  background: #B0E0E6E6;
+  height: 100vh;
+  display:flow-root;
+  justify-content: center;
+  align-items: center;
   
+
+}
+
+.Customerglass{
+  display: flexbox;
+  background: #ffffff;
+  height: 50vh;
+  justify-content: center;
+  
+  align-items: center;
+  margin-top:1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+} */
+
+
+/* .detail{
+  text-align: center;
+  
+
+}
+*/
+.ourteam{
+background: #B0E0E6E6;
+height: 90vh;
+display:flow-root;
+justify-content: center;
+align-items: center;
+
+
+}
+
+.ourteamglass{
+display: flexbox;
+background: #ffffff;
+
+justify-content: center;
+
+align-items: center;
+margin-top:1rem;
+margin-left: 1rem;
+margin-right: 1rem;
+height: 85vh;
+margin-bottom: 2rem;
+
+}
+
+.ourCon{
+margin-left: 10px;
+margin-right: 10px;
+}
+
