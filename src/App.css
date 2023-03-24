@@ -1,40 +1,93 @@
-.App {
-  text-align: center;
-  display: flex;
-  font-family: 'Poppins', sans-serif;
+.progress1{
+  width: 100%; 
+  gap: 50px;
+
+  
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+.pro{
+  width: 60%;
+  
+}
+.card{
+  position: relative;
+  float: right;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+
+ul {
+  list-style: none;
+}
+
+ul li{
+  list-style-position: inside;
+}
+
+ul .item-1::before {
+  content: "\25AA";
+  color: #848484;
+  align-items: baseline;
+  display: inline-block;
+}
+
+ul .item-2::before {
+  content: "\25AA";
+  color: #621212;
+  display: inline-block; 
+}
+
+.rectrangel-1 {
+  display: inline-block;
+  margin-right: 10px;
+  width: 10px;
+  height: 10px;
+  background-color: #848484;
+}
+
+.text-1{
+  display: inline-block;
+  font-size: 14px;
+}
+.rectrangel-2 {
+  display: inline-block;
+  margin-right: 10px;
+  width: 10px;
+  height: 10px;
+  background-color: #621212;
+}
+.text-2{
+  display: inline-block;
+    font-size: 14px;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  .rectrangel-3 {
+    display: inline-block;
+    margin-right: 10px;
+    width: 10px;
+    height: 10px;
+    background-color: #15AD2D;
+  }
+  .text-3{
+    display: inline-block;
+      font-size: 14px;
+    }
+  
+.card-input{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: flex-end;
+}
+.my-bullet-points {
+  list-style: none;
 }
 
-.App-link {
-  color: #61dafb;
+.my-bullet-point:before {
+  content: "•";
+  margin-right: 0.5rem;
+  font-size: 1.8em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.d-flex{
+  display: flex!important;
+  align-items: flex-end;
 }
