@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Ourteam from './pages/ourteam/Ourteam';
 import Companies from './pages/companies/Companies';
 import People from './pages/people/People';
-import Create from './pages/create/Create';
 import Projects from './pages/project/Projects';
 
 function App() {
@@ -21,7 +20,6 @@ function App() {
         <Route path='/' exact component={Home} />
         <Route path='/projects' component={Projects} />
         <Route path='/ourteam' component={Ourteam} />
-        <Route path='/create' component={Create} />
         <Route path='/companies' component={Companies} />
         <Route path='/people' component={People} />
       </Switch>

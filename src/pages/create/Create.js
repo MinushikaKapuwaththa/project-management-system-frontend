@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import './create.css';
+import React, { useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
@@ -9,7 +8,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import InputGroup from 'react-bootstrap/InputGroup'
 
 export default function Create() {
-  const [validated, setValidated] = useState(false);
   const [startdate, setStartdate] = useState(new Date());
   const [estimatedEndDate, setEstimatedEndDate] = useState(new Date());
 
@@ -22,30 +20,25 @@ export default function Create() {
   };
 
   const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
-    setValidated(true);
+    event.preventDefault();
+    console.log('Form submitted');
   };
 
   return (
-    <div>
-    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+    
+     <Form onSubmit={handleSubmit}>
       
-       <Form.Group as={Col} md="3" controlId="validationCustom01">
+       <Form.Group as={Col} md="6" controlId="validationCustom01">
           <Form.Label>Project Name*</Form.Label>
-          <Form.Control type="text" placeholder="" required />
+          <Form.Control type="text" placeholder="" />
           <Form.Control.Feedback type="invalid">
             Please provide a Project Name.
           </Form.Control.Feedback>
         </Form.Group>
       
-        <Form.Group as={Col} md="3" controlId="validationCustom02">
+        <Form.Group as={Col} md="6" controlId="validationCustom02">
           <Form.Label>Key*</Form.Label>
-          <Form.Control type="text" placeholder="" required />
+          <Form.Control type="text" placeholder="" />
           <Form.Control.Feedback type="invalid">
             Please provide a Key value.
           </Form.Control.Feedback>
@@ -54,17 +47,17 @@ export default function Create() {
 
       <Row className="mb-3">
 
-        <Form.Group as={Col} md="3" controlId="validationCustom03">
+        <Form.Group as={Col} md="5" controlId="validationCustom03">
           <Form.Label>Client Name*</Form.Label>
-          <Form.Control type="text" placeholder="" required />
+          <Form.Control type="text" placeholder="" />
           <Form.Control.Feedback type="invalid">
             Please provide a Name.
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group as={Col} md="3" controlId='validationCustom04'>
+        <Form.Group as={Col} md="5" controlId='validationCustom04'>
              <Form.Label>Reported By*</Form.Label>
-                <Form.Select placeholder='' required>
+                <Form.Select placeholder=''>
                       <option></option> 
                       <option value ='1'>Bimal Perera</option>
                       <option value='2'>Nadun Wijethunga</option>
@@ -82,27 +75,27 @@ export default function Create() {
                as='textarea'
                rows={3}
                type='textarea'
-               style={{ height: '75px', width:'590px' }}
-               required
+               style={{ height: '75px', width:'420px' }}
             ></Form.Control>
             <Form.Control.Feedback type="invalid">
                     Please provide a Name.
                 </Form.Control.Feedback>   
         </Form.Group>
 
-        <Form.Group as={Col} md="3" controlId='validationCustom04'>
+        <Form.Group as={Col} md="5" controlId='validationCustom04'>
              <Form.Label>Type*</Form.Label>
-                <Form.Select placeholder='' required>
+                <Form.Select placeholder=''>
                       <option></option>
                       <option value ='1'>Type 1</option>
                       <option value='2'>Type 2</option>
                 </Form.Select>    
-          </Form.Group> 
+          </Form.Group>
 
-          <Form.Group as={Col} md="2" controlId="validationCustomUsername">
-          <Form.Label>Hourly Rate</Form.Label>
+          <Form.Group as={Col} md="5" controlId="validationCustomUsername">
+          <Form.Label>Estimated Time</Form.Label>
           <InputGroup>
             <Form.Select 
+             
               placeholder="Select estimated time" 
               min={null} 
               max={500}
@@ -113,7 +106,8 @@ export default function Create() {
                 </option>
               ))}
             </Form.Select>
-            <InputGroup.Text id="basic-addon2">Lkr</InputGroup.Text>
+
+            <InputGroup.Text id="basic-addon2">Hours</InputGroup.Text>
           </InputGroup>
         </Form.Group>
 
@@ -140,65 +134,69 @@ export default function Create() {
             </Form.Group>
           </Row>
           
-          <Row className="mb-3">
-            <Form.Group as={Col} md="2" controlId="validationCustomUsername">
-            <Form.Label>Estimated Budget</Form.Label>
-              <InputGroup hasValidation>
-                <Form.Select 
-                  placeholder="Select estimated time" 
-                  // min={0} 
-                  max={500}
-                 
-                 
-                >
-                  {[...Array(501).keys()].map((num) => (
-                    <option key={num} value={num}>
-                      {num}
-                    </option>
-                  ))}
-                </Form.Select>
-              <InputGroup.Text id="basic-addon2">Lkr</InputGroup.Text>
+        <Row className="mb-3">
+        <Form.Group as={Col} md="5" controlId="validationCustomUsername">
+          <Form.Label>Estimated Budget</Form.Label>
+          <InputGroup>
+            <Form.Select 
+             
+              placeholder="Select estimated time" 
+              min={null} 
+              max={500}
+            >
+              {[...Array(501).keys()].map((num) => (
+                <option key={num} value={num}>
+                  {num}
+                </option>
+              ))}
+            </Form.Select>
+
+            <InputGroup.Text id="basic-addon2">Lkr</InputGroup.Text>
           </InputGroup>
-          </Form.Group>
+        </Form.Group>
 
-          <Form.Group as={Col} md="2" controlId="validationCustomUsername">
-              <Form.Label>Hourly Rate</Form.Label>
-              <InputGroup hasValidation>
-                <Form.Select 
-                  placeholder="Select estimated time" 
-                  min={null} 
-                  max={500}
-                 
-                >
-                  {[...Array(501).keys()].map((num) => (
-                    <option key={num} value={num}>
-                      {num}
-                    </option>
-                  ))}
-                </Form.Select>
-                <InputGroup.Text id="basic-addon2">Lkr</InputGroup.Text>
-              </InputGroup>
-          </Form.Group>
+        <Form.Group as={Col} md="5" controlId="validationCustomUsername">
+          <Form.Label>Hourly Rate</Form.Label>
+          <InputGroup>
+            <Form.Select 
+             
+              placeholder="Select estimated time" 
+              min={null} 
+              max={500}
+            >
+              {[...Array(501).keys()].map((num) => (
+                <option key={num} value={num}>
+                  {num}
+                </option>
+              ))}
+            </Form.Select>
 
-          </Row> 
+            <InputGroup.Text id="basic-addon2">Lkr</InputGroup.Text>
+          </InputGroup>
+        </Form.Group>
 
-          <Form.Group as={Col} md="3" controlId="formGroupLead">
+        </Row> 
+
+          <Form.Group as={Col} md="6" controlId="formGroupLead">
                 <Form.Label>Lead*</Form.Label>
-                <Form.Control type="text" placeholder="" required/>
+                <Form.Control type="text" placeholder=""/>
                 <Form.Control.Feedback type="invalid">
                     Please provide a Name.
                 </Form.Control.Feedback> 
           </Form.Group>
       
-      <br/>
-      <Form.Group className="mb-3">
-          <Button type="submit">Submit form</Button>{' '}
-          <Button as="input" type="reset" value="Reset" /> 
-      </Form.Group>
+          <br/>
+          <Form.Group className="mb-3">
+              <Button type="submit">Submit form</Button>{' '}
+              <Button as="input" type="reset" value="Reset" /> 
+          </Form.Group>
 
-    </Form>   
-      
-</div>
+    
+
+    </Form>    
+ 
+     
+
 );
 
 }

@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-
-import Add_Employee from './Add_Employee';
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import AddNewCompany from "./AddNewCompany";
 
 function Example1() {
- 
   const [lgShow, setLgShow] = useState(false);
 
   return (
     <>
-      
-      <Button onClick={() => setLgShow(true)}>+Add New Member</Button>
-     
+      <Button onClick={() => setLgShow(true)}>+Add New Company</Button>
+
       <Modal
         size="lg"
         show={lgShow}
@@ -21,11 +18,12 @@ function Example1() {
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-lg">
-           Add Employee
+            Add Company
           </Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
-          <Add_Employee/>
+          <AddNewCompany />
         </Modal.Body>
       </Modal>
     </>
