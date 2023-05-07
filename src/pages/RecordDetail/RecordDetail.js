@@ -1,26 +1,22 @@
 import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from 'react-bootstrap/Button';
 import RecordUseform from "./Components/RecordUseform";
 import validate from "./Components/RecordDetailValidationRules";
 import axios from 'axios';
-import { useState } from "react";
 import { useEffect } from "react";
 import "./RecordDetail.css";
+import { useParams } from "react-router-dom";
 
 
 function RecordDetail() {
-  const [projects, setProjects]=useState([])
-  const [clients, setClients]=useState([])
+  const {projectId}=useParams();
   useEffect(()=>{
     axios
-    .get('http://localhost:5148/api/Poject')
+    .get(`http://localhost:5148/api/Poject/${projectId}`)
     .then (
-      Response=>{ 
-        setProjects(Response.data.result)
-        setClients(Response.data.result)
-        console.log(Response.data.result)
+      Response=>{
+        setValues(values => ({ ...values, "projectId":Response.data.result.id,"projectName":Response.data.result.name }))
     })
     .catch(
       Error=> {
@@ -47,10 +43,9 @@ function RecordDetail() {
     })
   };
  
-  const  { values, handleChange, handleSubmit, errors } = RecordUseform(
+  const  { values,setValues, handleChange, handleSubmit, errors } = RecordUseform(
     submit,
-    validate ,
-    projects 
+    validate  
   );
 
 
@@ -77,11 +72,13 @@ function RecordDetail() {
         </Form.Group>
         <Form.Group className="projectid-input">
         <Form.Label>Project ID </Form.Label>
-        <Form.Select name="projectId" onChange={handleChange}aria-label="Default select example">
-            {projects.map((project)=>
-            <option value={project.id}>{project.id} </option>
-            )}
-        </Form.Select> 
+        <Form.Control
+            type="text"
+            name="projectId"
+            onChange={handleChange}
+            value={values.projectId || ""}
+            readOnly={true}
+          /> 
             {errors.projectId && (
               <p className="help danger" style={{ color: "red" }}>
                 {errors.projectId}
@@ -162,8 +159,8 @@ function RecordDetail() {
               </p>
             )}
       </Form.Group>
-      <Button  className="me-3 float-end" style={{ width: "190px", height: "50px", margin: "10px" }} type="submit">Add</Button>
-      <Button  className="me-3 float-end" style={{ width: "100px", height: "50px", margin: "10px" }} type="reset">Cancel</Button>               
+      <Button className="me-3 float-end"style={{ width: "190px", height: "50px", margin: "10px"  }}type="submit"> Add </Button>
+     <Button  className="me-3 float-end" style={{ width: "100px", height: "50px", margin: "10px" }} type="reset">Cancel</Button>               
       </Form>
        </div>
   );

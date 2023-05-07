@@ -1,7 +1,3 @@
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -10,7 +6,7 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { useRef,useEffect } from "react";
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import "./BudgetPage.css";
 
@@ -18,6 +14,7 @@ import "./BudgetPage.css";
 function BudgetPage() {
   const progress1 =useRef();
   const progress2=useRef();
+  const {projectId,name }=useParams();
 
 const [payments,setPayments]=useState([])
 const[price,setprice]=useState(0)
@@ -26,14 +23,13 @@ const[RealCost,setRealCost]=useState(0)
 const[EstimatedCost,setEstimatedCost]=useState()
 useEffect(()=>{
   axios
-  .get('http://localhost:5148/api/Budget')
-  .then (
+  .get(`http://localhost:5148/api/Budget/ProjectId/${projectId}`)
+  .then ( 
     Response=>{
-
-      setprice(Response.data.result[0].totalBudget)
-      setReceived(Response.data.result[0].received )
-      setRealCost(Response.data.result[0].actualcost)
-      setEstimatedCost(Response.data.result[0].plannedcost)
+      setprice(Response.data.result.totalBudget)
+      setReceived(Response.data.result.received )
+      setRealCost(Response.data.result.actualcost)
+      setEstimatedCost(Response.data.result.plannedcost)
   })
   .catch(
     Error=> {
@@ -41,7 +37,7 @@ useEffect(()=>{
   })
 
   axios
-  .get('http://localhost:5148/api/Payment')
+  .get(`http://localhost:5148/api/Payment/ProjectId/${projectId}`)
   .then(
     Response=>{
         setPayments(Response.data.result);
@@ -72,45 +68,21 @@ useEffect(() => {
 
   return (
     <div className="App">
-      <Navbar bg="light" expand="lg">
-        <Container>
-          <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Link</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-      <p style={{ margin:"1.2rem" }}>Projects  /  Hospital Management Project(P00232)  / Budget</p>
+    
+      <Link to={"/project"}>Projects</Link><Link to={`/project/${name}/${projectId}`}>/{name}({projectId})</Link><Link to={`/project/${name}/${projectId}/budget`}>/Budget</Link>
       <div style={{display:"flex",justifyContent:"space-between" ,alignItems:"baseline"}} >
         <p style={{fontSize:"20px",font:"inter",fontWeight:600, margin:"1.2rem"}}>Budget</p>
-        <Link to="/BudgetDetailForm">
+        <Link to={`/project/${name}/${projectId}/Budget/BudgetDetailForm`}>
         <Button variant="primary" style={{margin:"10px",backgroundColor:"#305995" ,width:"fit-content"}}>+Add Details</Button>
         </Link>
       </div>
       <InputGroup className="progress-group"style={{justifyContent:"space-between" }} >
-        <Col className="id-input" sm={8} >
+        <Col className="projectId-input" sm={8} >
           <div class="p-2 ">
-            <ProgressBar className="progress1" ref={progress1} style={{backgroundColor:"#848484",width: "180%"}} now={4} />
+            <ProgressBar className="progress1" ref={progress1} style={{backgroundColor:"#848484",width: "80%"}} now={4} />
           </div>
           <div class="p-2 ">
-          <ProgressBar className="progress2" ref={progress2} style={{backgroundColor:"#15AD2D",width: "180%" }} now={4} />  
+          <ProgressBar className="progress2" ref={progress2} style={{backgroundColor:"#15AD2D",width: "80%" }} now={4} />  
           
           </div>
         </Col>
@@ -174,7 +146,7 @@ useEffect(() => {
           </Card>
         </Col>
         <Col className="d-flex justify-content-center">
-        <Link to="/RecordDetail"> 
+        <Link to={`/project/${name}/${projectId}/Budget/RecordDetail`}> 
         <Button variant="primary" style={{margin:"10px",backgroundColor:"#305995" ,width:"fit-content"}}>+Add Record</Button>
         </Link>
         </Col>

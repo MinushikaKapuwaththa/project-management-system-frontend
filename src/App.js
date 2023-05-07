@@ -8,9 +8,9 @@ function App() {
   return(
     <BrowserRouter>
       <Routes>
-        <Route path="/" exec element={<BudgetPage />}/>
-        <Route path="/BudgetDetailForm" element={<BudgetDetailForm />}/>
-        <Route path="/RecordDetail" element={<RecordDetail />}/>
+        <Route path="/project/:name/:projectId/Budget" exec element={<BudgetPage />}/>
+        <Route path="/project/:name/:projectId/Budget/BudgetDetailForm" element={<BudgetDetailForm />}/>
+        <Route path="/project/:name/:projectId/Budget/RecordDetail" element={<RecordDetail />}/>
       </Routes>
     </BrowserRouter>
   );
