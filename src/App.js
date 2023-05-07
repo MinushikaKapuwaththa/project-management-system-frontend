@@ -1,4 +1,7 @@
-import React from "react";
+import BudgetPage from "./pages/BudgetPage/BudgetPage";
+import BudgetDetailForm from "./pages/BudgetDetailForm/BudgetDetailForm";
+import RecordDetail from "./pages/RecordDetail/RecordDetail";
+import { BrowserRouter, Routes, Route } from "react-router-dom"; 
 import "./App.css";
 import Navbar from "./layouts/Navbar/NavbarComponent";
 import Home from "./pages/home/Home";
@@ -30,6 +33,10 @@ function App() {
             <Route path="/projects-home" component={ProjectsHome} />
             <Route path="/project-requirement" component={ProjectRequirementPage} />
             <Route path="/project-task" component={ProjectTaskPage} />
+
+            <Route path="/project/:name/:projectId/Budget" exec element={<BudgetPage />}/>
+        <Route path="/project/:name/:projectId/Budget/BudgetDetailForm" element={<BudgetDetailForm />}/>
+        <Route path="/project/:name/:projectId/Budget/RecordDetail" element={<RecordDetail />}/>
           </Switch>
         </Router>
       </div>
