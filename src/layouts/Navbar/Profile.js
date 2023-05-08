@@ -6,9 +6,6 @@ import "./Navbar.css"
 export default function Profile() {
   return (
     <div>
-      
-      
-         
               <MDBCardBody >
                
                 <div className='profile'>
