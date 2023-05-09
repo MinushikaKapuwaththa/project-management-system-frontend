@@ -13,7 +13,7 @@ function RecordDetail() {
   const {projectId}=useParams();
   useEffect(()=>{
     axios
-    .get(`http://localhost:5148/api/Poject/${projectId}`)
+    .get(`http://localhost:5148/api/Project/${projectId}`)
     .then (
       Response=>{
         setValues(values => ({ ...values, "projectId":Response.data.result.id,"projectName":Response.data.result.name }))
