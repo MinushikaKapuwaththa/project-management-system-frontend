@@ -20,9 +20,4 @@ import './module.css'
 // }
 
 // export default module
-export default function module(){
-    return <h1 className='module'>module</h1>;
-}
-
-
 
