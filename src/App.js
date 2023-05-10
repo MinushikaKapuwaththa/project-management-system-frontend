@@ -1,4 +1,4 @@
-import React from "react";
+import BudgetPage from "./pages/BudgetPage/BudgetPage";
 import "./App.css";
 import Navbar from "./layouts/Navbar/NavbarComponent";
 import Home from "./pages/home/Home";
@@ -34,6 +34,7 @@ function App() {
             <Route path="/projects-home" component={ProjectsHome} />
             <Route path="/project-requirement" component={ProjectRequirementPage} />
             <Route path="/project-task" component={ProjectTaskPage} />
+<<<<<<< HEAD
             <Route path="/project-module" component={ProjectModulePage} />
             <Route path="/moduleform" component={ModuleForm} />
             <Route path="/moduledetailsform" component={ModuleDetailsForm}/>
@@ -41,6 +42,9 @@ function App() {
             
 
             
+=======
+            <Route path="/project/:name/:projectId/budget" component={BudgetPage}/>
+>>>>>>> 882d59a8f01d84f163250b7922fbf10b17ba6217
           </Switch>
         </Router>
       </div>
