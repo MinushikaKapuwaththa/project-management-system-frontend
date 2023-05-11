@@ -1,4 +1,4 @@
-import React from "react";
+import BudgetPage from "./pages/BudgetPage/BudgetPage";
 import "./App.css";
 import Navbar from "./layouts/Navbar/NavbarComponent";
 import Home from "./pages/home/Home";
@@ -34,13 +34,11 @@ function App() {
             <Route path="/projects-home" component={ProjectsHome} />
             <Route path="/project-requirement" component={ProjectRequirementPage} />
             <Route path="/project-task" component={ProjectTaskPage} />
+
             <Route path="/project-module" component={ProjectModulePage} />
             <Route path="/moduleform" component={ModuleForm} />
             <Route path="/moduledetailsform" component={ModuleDetailsForm}/>
-            
-            
-
-            
+            <Route path="/project/:name/:projectId/budget" component={BudgetPage}/>
           </Switch>
         </Router>
       </div>
