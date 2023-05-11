@@ -1,7 +1,4 @@
 import BudgetPage from "./pages/BudgetPage/BudgetPage";
-import BudgetDetailForm from "./pages/BudgetDetailForm/BudgetDetailForm";
-import RecordDetail from "./pages/RecordDetail/RecordDetail";
-import { BrowserRouter, Routes, Route } from "react-router-dom"; 
 import "./App.css";
 import React, { useState } from 'react';
 import {Router, Route, Routes } from 'react-router-dom';
@@ -16,12 +13,16 @@ import Create from "./pages/create/Create";
 import ProjectsHome from "./pages/project/ProjectsHomePage";
 import ProjectRequirementPage from "./pages/project/ProjectRequirementPage";
 import ProjectTaskPage from "./pages/project/ProjectTaskPage";
+
 import Form from './components/Login/registration';
 import Req from './components/Requirments/page';
 import Reg from './components/Login/Sign';
 import Add from './components/Requirments/Addrequirment';
 import Asign from './components/Asign';
 import { ToastContainer } from 'react-toastify';
+import ProjectModulePage from "./pages/project/ProjectModulePage";
+import ModuleForm from "./components/ModuleForm//ModuleForm"
+import ModuleDetailsForm from "./components/ModuleForm/ModuleDetailsForm"
 
 function App() {
   return (
@@ -53,9 +54,11 @@ function App() {
             <Route path="/project-requirement" component={ProjectRequirementPage} />
             <Route path="/project-task" component={ProjectTaskPage} />
 
-            <Route path="/project/:name/:projectId/Budget" exec element={<BudgetPage />}/>
-        <Route path="/project/:name/:projectId/Budget/BudgetDetailForm" element={<BudgetDetailForm />}/>
-        <Route path="/project/:name/:projectId/Budget/RecordDetail" element={<RecordDetail />}/>
+
+            <Route path="/project-module" component={ProjectModulePage} />
+            <Route path="/moduleform" component={ModuleForm} />
+            <Route path="/moduledetailsform" component={ModuleDetailsForm}/>
+            <Route path="/project/:name/:projectId/budget" component={BudgetPage}/>
           </Switch>
         </Router>
       </div>

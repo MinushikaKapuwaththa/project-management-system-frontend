@@ -47,7 +47,7 @@ function BudgetDetailForm() {
   
   useEffect(()=>{
     axios
-    .get(`http://localhost:5148/api/Poject/${projectId}`)
+    .get(`http://localhost:5148/api/Project/${projectId}`)
     .then (
       Response=>{
         console.log(Response.data.result)

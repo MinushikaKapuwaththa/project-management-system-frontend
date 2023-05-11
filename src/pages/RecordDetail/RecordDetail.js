@@ -7,13 +7,16 @@ import axios from 'axios';
 import { useEffect } from "react";
 import "./RecordDetail.css";
 import { useParams } from "react-router-dom";
+import { Switch, Route,useRouteMatch } from "react-router-dom";
+import Invoice from "../Invoice/Invoice";
 
 
 function RecordDetail() {
+  const { path } = useRouteMatch();
   const {projectId}=useParams();
   useEffect(()=>{
     axios
-    .get(`http://localhost:5148/api/Poject/${projectId}`)
+    .get(`http://localhost:5148/api/Project/${projectId}`)
     .then (
       Response=>{
         setValues(values => ({ ...values, "projectId":Response.data.result.id,"projectName":Response.data.result.name }))
@@ -50,7 +53,9 @@ function RecordDetail() {
 
 
   return (
-    <div className="App">
+    <Switch>
+      <Route exact path={path}>
+      <div className="App">
       <Form onSubmit={handleSubmit}>
       <Form.Group
           className="project-input"
@@ -163,6 +168,10 @@ function RecordDetail() {
      <Button  className="me-3 float-end" style={{ width: "100px", height: "50px", margin: "10px" }} type="reset">Cancel</Button>               
       </Form>
        </div>
+      </Route>
+      <Route path={`${path}/invoice`} component={Invoice}/>
+    </Switch>
+    
   );
 }
 export default RecordDetail;
