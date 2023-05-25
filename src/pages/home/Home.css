@@ -16,7 +16,7 @@
   
   
   .notification:hover{
-    cuser:pointer;
+    cursor:pointer;
   }
   
   .notification:active {

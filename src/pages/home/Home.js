@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./Home.css";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
-
 import Table from "react-bootstrap/Table";
 
 export default function Home() {

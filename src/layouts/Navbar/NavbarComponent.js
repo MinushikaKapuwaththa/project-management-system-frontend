@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {Navbar, Nav} from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Profile from "./Profile";
+// import Profile from "./Profile";
 
 
 function NavbarComponent() {
@@ -54,12 +54,14 @@ function NavbarComponent() {
              
           </Nav>
 
-        <Nav>
+        {/* <Nav>
           <Nav className="user">
             <img src="public/images.png" alt=""/>
            </Nav>
+
             <Profile/>
-        </Nav> 
+
+        </Nav>  */}
 
         </Navbar.Collapse>
       </Container>
