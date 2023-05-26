@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./project.css";
 import Table from "react-bootstrap/Table";
 import Col from "react-bootstrap/Col";
@@ -18,6 +18,8 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import SideBar from "./SideBar";
+import { getProjects } from "../../services/projectService";
 
 // Add SearchBar
 const Search = styled("div")(({ theme }) => ({
@@ -63,6 +65,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function Project() {
+
+  const [projectData, setProjectData] = useState([]);
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    getProjects().then((res) => setProjectData(res.data.result));
+    console.log(projectData);
+  }, []);
   const [statusAll, setStatusAll] = React.useState("");
 
   const handleChange = (event) => {
@@ -464,14 +474,52 @@ function Project() {
                   <td>Demo Software project</td>
                   <td>Done</td>
                   <td>Amal Silva</td>
+                  <td > <Button href="/view-project">View</Button> </td>
+                </tr>
+                <tr>
+                  <td>DS001</td>
+                  <td>Demo Software project</td>
+                  <td>Done</td>
+                  <td>Amal Silva</td>
+                  <td > <Button href="/view-project">View</Button> </td>
                 </tr>
               </tbody>
             </Table>
           </div>
         </div>
       </div>
+      <br />
+      {/* <SideBar /> */}
+      {/* <table className="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Estimatetime</th>
+            <th scope="col">Actualtime</th>
+            <th scope="col">Remainingtime</th>
+            <th scope="col">Stratdate</th>
+            <th scope="col">Enddate</th>
+          </tr>
+        </thead>
+        <tbody>
+          {projectData.map((data, index) => (
+            <tr key={index}>
+              <th scope="row">{data.id}</th>
+              <td>{data.name}</td>
+              <td>{data.estimatetime}</td>
+              <td>{data.actualtime}</td>
+              <td>{data.remainingtime}</td>
+              <td>{data.startdate}</td>
+              <td>{data.enddate}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table> */}
+  
     </div>
   );
 }
 
 export default Project;
+
