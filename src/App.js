@@ -14,6 +14,7 @@ import ProjectTaskPage from "./pages/project/ProjectTaskPage";
 import ProjectModulePage from "./pages/project/ProjectModulePage";
 import ModuleForm from "./components/ModuleForm//ModuleForm"
 import ModuleDetailsForm from "./components/ModuleForm/ModuleDetailsForm"
+import Projects from "./pages/project/Projects";
 
 function App() {
   return (
@@ -28,11 +29,13 @@ function App() {
             <Route path="/create" component={Create} />
             <Route path="/companies" component={Companies} />
             <Route path="/people" component={People} />
+           
             
 
             {/* Project moduel routes */}
-            <Route path="/projects-home" component={ProjectsHome} />
+            <Route path="/projects-home" component={Projects} />
             <Route path="/project-requirement" component={ProjectRequirementPage} />
+            <Route path="/view-project" component={ProjectsHome}/>
             <Route path="/project-task" component={ProjectTaskPage} />
             <Route path="/project-module" component={ProjectModulePage} />
             <Route path="/moduleform" component={ModuleForm} />
