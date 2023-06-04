@@ -34,17 +34,10 @@ function App() {
             <Route path="/projects-home" component={ProjectsHome} />
             <Route path="/project-requirement" component={ProjectRequirementPage} />
             <Route path="/project-task" component={ProjectTaskPage} />
-<<<<<<< HEAD
             <Route path="/project-module" component={ProjectModulePage} />
             <Route path="/moduleform" component={ModuleForm} />
             <Route path="/moduledetailsform" component={ModuleDetailsForm}/>
-            
-            
-
-            
-=======
             <Route path="/project/:name/:projectId/budget" component={BudgetPage}/>
->>>>>>> 882d59a8f01d84f163250b7922fbf10b17ba6217
           </Switch>
         </Router>
       </div>
