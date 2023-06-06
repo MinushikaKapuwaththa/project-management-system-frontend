@@ -48,7 +48,7 @@ function ModuleListItem() {
                 required
               />
 
-              {serviceList.length - 1 === index && serviceList.length < 4 && (
+              {serviceList.length - 1 === index && serviceList.length < 100 && (
                 <button variant="dark"
                   type="button"
                   onClick={handleServiceAdd}
