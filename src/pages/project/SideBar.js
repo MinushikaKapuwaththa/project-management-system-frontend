@@ -24,7 +24,10 @@ export default function SideBar() {
          Budget
        </a>
        <a className="menu-item" href="/document">
-         Documents
+         Documents </a>
+         <a className="menu-item" href="/project-Button">
+         Button
+
        </a>
      </Menu>
   );

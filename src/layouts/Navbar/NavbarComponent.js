@@ -1,16 +1,36 @@
 import React, { useState } from "react";
+import {Navbar, Nav,Button} from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+// import Profile from "./Profile";
 
-import { Navbar, Nav, Button } from "react-bootstrap";
-import Container from "react-bootstrap/Container";
-import NavDropdown from "react-bootstrap/NavDropdown";
 
 function NavbarComponent() {
   const [click, setClick] = useState(false);
   const [dropdown, setDropdown] = useState(false);
 
+  const handleClick = () => setClick(!click);
+  const closeMobileMenu = () => setClick(false);
+
+  const onMouseEnter = () => {
+    if (window.innerWidth < 960) {
+      setDropdown(false);
+    } else {
+      setDropdown(true);
+    }
+  };
+
+  const onMouseLeave = () => {
+    if (window.innerWidth < 960) {
+      setDropdown(false);
+    } else {
+      setDropdown(false);
+    }
+  };
+     
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Container fluid>
+       <Container fluid>
         <Navbar.Brand href="/">G3 Technology</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -24,12 +44,13 @@ function NavbarComponent() {
               <NavDropdown.Item href="/people">People</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href="/ourteam">Our Team</Nav.Link>
+             
           </Nav>
           <Nav>
             <Button href="/create">Create</Button>{" "}
           </Nav>
         </Navbar.Collapse>
-      </Container>
+      </Container> 
     </Navbar>
   );
 }

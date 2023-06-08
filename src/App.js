@@ -11,6 +11,11 @@ import Create from "./pages/create/Create";
 import ProjectsHome from "./pages/project/ProjectsHomePage";
 import ProjectRequirementPage from "./pages/project/ProjectRequirementPage";
 import ProjectTaskPage from "./pages/project/ProjectTaskPage";
+import ProjectModulePage from "./pages/project/ProjectModulePage"
+import ModuleForm from "./components/Module/ModuleForm"
+import ModuleDetailsForm from "./components/ModuleFormEdit/ModuleDetailsForm"
+import Projects from "./pages/project/Projects";
+
 
 function App() {
   return (
@@ -25,11 +30,17 @@ function App() {
             <Route path="/create" component={Create} />
             <Route path="/companies" component={Companies} />
             <Route path="/people" component={People} />
+           
+            
 
             {/* Project moduel routes */}
-            <Route path="/projects-home" component={ProjectsHome} />
+            <Route path="/projects-home" component={Projects} />
             <Route path="/project-requirement" component={ProjectRequirementPage} />
+            <Route path="/view-project" component={ProjectsHome}/>
             <Route path="/project-task" component={ProjectTaskPage} />
+            <Route path="/project-module" component={ProjectModulePage} />
+            <Route path="/moduleform" component={ModuleForm} />
+            <Route path="/moduledetailsform" component={ModuleDetailsForm}/>
             <Route path="/project/:name/:projectId/budget" component={BudgetPage}/>
           </Switch>
         </Router>

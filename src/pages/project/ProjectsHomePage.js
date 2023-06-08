@@ -8,25 +8,32 @@ export default function ProjectsHomePage() {
   return (
     <div>
       <ProjectModuleLayout />
+
       <div class="container">
+        <div class="position-relative">
+          <div class="position-absolute top-0 start-0 translate-middle"></div>
+          <div class="position-absolute top-50 start-100 translate-middle"></div>
+          <div class="position-absolute bottom-0 start-50 translate-middle"></div>
+          <div class="position-absolute bottom-50 start-100 translate-middle"></div>
+        </div>
         <div class="row">
           <div class="col">
-            chart 1
-            <ProjectDashboardTable/>
+            Details
+            <ProjectDashboardTable />
           </div>
           <div class="col">
-            chart 2
+            Task
             <MyChart />
           </div>
         </div>
         <div class="row">
           <div class="col">
-            chart 3
-            <ProjectDashboardTimeChart/>
+            Time
+            <ProjectDashboardTimeChart />
           </div>
           <div class="col">
-            chart 4
-            <ProjectDashboardCostChart/>
+            Cost
+            <ProjectDashboardCostChart />
           </div>
         </div>
       </div>

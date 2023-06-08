@@ -15,7 +15,7 @@ export default function SideBar() {
         <a className="menu-item" href="/project-task">
           Task
         </a>
-        <a className="menu-item" href="/module">
+        <a className="menu-item" href="/project-module">
           Module
         </a>
         <a className="menu-item" href="/budget">
