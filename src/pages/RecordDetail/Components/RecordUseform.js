@@ -17,9 +17,30 @@ const RecordUseform= (callback,validate) => {
     setErrors(validate(values));
     setIsSubmitting(true);
   };
+
+  
+
   const handleChange = (event) => {
     event.persist();
-    setValues(values => ({ ...values, [event.target.name]: event.target.value }));
+    if(event.target.name=="attachment"){
+      
+      let file = event.target.files[0];
+        let reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = function() {
+          const base64String=reader.result ;
+          setValues(values => ({ ...values, [event.target.name]: base64String }));
+          
+        };
+
+        reader.onerror = function() {
+          console.log(reader.error);
+        }
+    }else{
+      setValues(values => ({ ...values, [event.target.name]: event.target.value }));
+    }
+    
   };
 
   return {

@@ -20,7 +20,7 @@ export default function SideBar() {
        <a className="menu-item" href="/module">
          Module
        </a>
-       <a className="menu-item" href="/budget">
+       <a className="menu-item" href="/project/projectmanagement%20system/3/aaa">
          Budget
        </a>
        <a className="menu-item" href="/document">

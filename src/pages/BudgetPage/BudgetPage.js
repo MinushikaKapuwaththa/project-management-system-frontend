@@ -12,6 +12,7 @@ import { BrowserRouter as Router, Switch, Route,useRouteMatch } from "react-rout
 import BudgetDetailForm from "../BudgetDetailForm/BudgetDetailForm";
 import RecordDetail from "../RecordDetail/RecordDetail";
 import "./BudgetPage.css";
+import SideBar from "../project/SideBar";
 
 
 function BudgetPage() {
@@ -25,11 +26,14 @@ const[price,setprice]=useState(0)
 const[Received,setReceived]=useState(0)
 const[RealCost,setRealCost]=useState(0)
 const[EstimatedCost,setEstimatedCost]=useState()
+const [role,setRole]=useState("admin");
 useEffect(()=>{
+  
   axios
   .get(`http://localhost:5148/api/Budget/ProjectId/${projectId}`)
   .then ( 
     Response=>{
+      console.log(Response.data)
       setprice(Response.data.result.totalBudget)
       setReceived(Response.data.result.received )
       setRealCost(Response.data.result.actualcost)
@@ -71,6 +75,8 @@ useEffect(() => {
 
 
   return (
+    <>
+    <SideBar />
     <Switch>
        <Route exact path={path}>
        <div className="App">
@@ -78,19 +84,21 @@ useEffect(() => {
     <Link to={"/project"}>Projects</Link><Link to={`/project/${name}/${projectId}`}>/{name}({projectId})</Link><Link to={`/project/${name}/${projectId}/budget`}>/Budget</Link>
     <div style={{display:"flex",justifyContent:"space-between" ,alignItems:"baseline"}} >
       <p style={{fontSize:"20px",font:"inter",fontWeight:600, margin:"1.2rem"}}>Budget</p>
-      <Link to={`/project/${name}/${projectId}/budget/BudgetDetailForm`}>
-      <Button variant="primary" style={{margin:"10px",backgroundColor:"#305995" ,width:"fit-content"}}>+Add Details</Button>
-      </Link>
+      {
+        role=="admin"?(<Link to={`/project/${name}/${projectId}/budget/BudgetDetailForm`}>
+        <Button variant="primary" style={{margin:"10px",backgroundColor:"#305995" ,width:"fit-content"}}>+Add Details</Button>
+        </Link>):null
+      }
     </div>
     <InputGroup className="progress-group"style={{justifyContent:"space-between" }} >
       <Col className="projectId-input" sm={8} >
         <div class="p-2 ">
-          <ProgressBar className="progress1" ref={progress1} style={{backgroundColor:"#848484",width: "80%"}} now={4} />
+          <ProgressBar className="progress1" ref={progress1} style={{backgroundColor:"#848484",width: "80%"}} now={((Received/price)*100)} />
         </div>
         <div class="p-2 ">
-        <ProgressBar className="progress2" ref={progress2} style={{backgroundColor:"#15AD2D",width: "80%" }} now={4} />  
+        <ProgressBar className="progress2" ref={progress2} style={{backgroundColor:"#848484",width: "80%" }} now={((RealCost/price)*100)} />  
+</div>
         
-        </div>
       </Col>
       <Col className="card-input" sm={4}>
         <Card style={{ width: "16rem",margin:"10px"}}>
@@ -166,6 +174,7 @@ useEffect(() => {
         <th style={{color:"white"}}>Date</th>
         <th style={{color:"white"}}>Paid Person</th>
         <th style={{color:"white"}}>Amount(LKR)</th>
+        <th style={{color:"white"}}>attachment</th>
       </tr>
     </thead>
     <tbody>
@@ -174,6 +183,27 @@ useEffect(() => {
         <td>{payment.created.split("T")[0]}</td>
         <td>{payment.paidby}</td>
         <td>{payment.amount}</td>
+        <td><button onClick={()=>{
+          const byteCharacters = atob(payment.attachment.substr(`data:application/pdf;base64,`.length));
+          const byteArrays = [];
+          
+          for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+              const slice = byteCharacters.slice(offset, offset + 1024);
+          
+              const byteNumbers = new Array(slice.length);
+              for (let i = 0; i < slice.length; i++) {
+                  byteNumbers[i] = slice.charCodeAt(i);
+              }
+          
+              const byteArray = new Uint8Array(byteNumbers);
+          
+              byteArrays.push(byteArray);
+          }
+          const blob = new Blob(byteArrays, {type: "application/pdf"});
+          const blobUrl = URL.createObjectURL(blob);
+          
+          window.open(blobUrl, '_blank');
+        }}>open</button></td>
       </tr>
        )}
       </tbody>
@@ -185,6 +215,8 @@ useEffect(() => {
       <Route path={`${path}/RecordDetail`} component={RecordDetail}/>
       <Route path={`${path}/BudgetDetailForm`} component={BudgetDetailForm}/>
     </Switch>
+    </>
+    
     
   );
 }

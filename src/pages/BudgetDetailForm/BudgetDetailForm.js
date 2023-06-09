@@ -9,9 +9,6 @@ import axios from 'axios';
 import "./BudgetDetailForm.css";
 import { useParams } from "react-router-dom";
 
-
-const now = 60;
-const now2 = 1;
 function BudgetDetailForm() {
   const {projectId}=useParams();
 
@@ -21,7 +18,7 @@ function BudgetDetailForm() {
     axios
     .post('http://localhost:5148/api/Budget',
     {
-     // Id:values.projectId,
+      projectId:values.projectId,
       Received:0, 
       yetToReceive:values.price,
       actualcost: values.actualtime*values.EstimatedHourlyRate,

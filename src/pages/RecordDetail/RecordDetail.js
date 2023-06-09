@@ -9,11 +9,38 @@ import "./RecordDetail.css";
 import { useParams } from "react-router-dom";
 import { Switch, Route,useRouteMatch } from "react-router-dom";
 import Invoice from "../Invoice/Invoice";
+import { useHistory } from "react-router-dom";
+import { useState } from "react";
+import { Document, Page, pdfjs } from 'react-pdf';
 
 
 function RecordDetail() {
   const { path } = useRouteMatch();
   const {projectId}=useParams();
+  const history = useHistory();
+  const [issueInvoice,setIssueInvoice]=useState(false);
+  const [invoiceData,setInvoiceData]=useState({
+    id: "5df3180a09ea16dc4b95f910",
+    invoice_no: "hhhhhh",
+    balance: "$2,283.74",
+    title:"deufe",
+    trans_date: "26-11-2023",
+    address: "Lanka Safety Equipment, \n No 23A,\n Pagoda Road,\n Nugegoda,\nSri Lanka\n\n",
+    client:"Client: Lanka Safety Equipment\n\n",
+    projectName:"Invoice for Website Development & Hosting",
+
+    due_date: "26-11-2021",
+    companyID: "10001",
+    companyName: "xyz company",
+  
+    items: [
+        {
+            sno: 1,
+            desc: "Website Development Cost",
+            amount:1000
+        }
+    ]
+})
   useEffect(()=>{
     axios
     .get(`http://localhost:5148/api/Project/${projectId}`)
@@ -28,23 +55,47 @@ function RecordDetail() {
   },[])
 
   const submit = () => {
+    
     axios
     .post('http://localhost:5148/api/Payment',
     {
       Paidby:values.clientId,
       amount:values.Amount,
-      attachment:"pdf",
-      PaymentType:"cash"
+      attachment:values.attachment,
+      PaymentType:"cash",
+      projectId:values.projectId
     }
     ).then (
-      Response=>{   
+      Response=>{
         console.log(Response)
+        setInvoiceData(
+          invoiceData => 
+          ({ ...invoiceData, 
+            "invoice_no":Response.data.result.id,
+            "trans_date":Response.data.result.created,
+            "client":Response.data.result.paydby,
+            "projectName":values.projectName,
+            items: [
+              {
+                  sno: 1,
+                  desc: values.projectName,
+                  amount:Response.data.result.amount
+              }
+            ]
+
+           }))
+        setIssueInvoice(true);
+        
     })
     .catch(
       Error=> {
         console.log(Error)
     })
   };
+
+  useEffect(()=>{
+    issueInvoice&&history.push(`${path}/invoice`)
+  },[invoiceData])
  
   const  { values,setValues, handleChange, handleSubmit, errors } = RecordUseform(
     submit,
@@ -154,9 +205,9 @@ function RecordDetail() {
          <Form.Label style={{ width:"20%",padding: "10px" }}>attachment</Form.Label>
           <Form.Control 
               type="file"
+              accept=".pdf"
               name="attachment"
               onChange={handleChange}
-              value={values.attachment || ""}
              /> 
                 {errors.attachment && (
               <p className="help danger" style={{ color: "red" }}>
@@ -169,7 +220,9 @@ function RecordDetail() {
       </Form>
        </div>
       </Route>
-      <Route path={`${path}/invoice`} component={Invoice}/>
+      <Route path={`${path}/invoice`}>
+        <Invoice invoiceData={invoiceData}/>
+      </Route>
     </Switch>
     
   );
