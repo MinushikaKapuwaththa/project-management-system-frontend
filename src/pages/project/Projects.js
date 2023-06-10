@@ -186,7 +186,7 @@ function Project() {
                           validated={validated}
                           onSubmit={handleSubmit}
                         >
-                          <Row className="mb-3">
+                          <Row className="mb-3 w-100">
                             <Form.Group
                               as={Col}
                               md="5"

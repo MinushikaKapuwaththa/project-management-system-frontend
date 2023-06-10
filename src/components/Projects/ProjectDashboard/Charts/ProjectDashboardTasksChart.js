@@ -21,8 +21,8 @@ const ProjectDashboardTasksChart = () => {
         enabled: false
       },
       xaxis: {
-        categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
-          'United States', 'China', 'Germany'
+        categories: ['Actual', 'Planed', 'Total Est',
+
         ],
       }
     }

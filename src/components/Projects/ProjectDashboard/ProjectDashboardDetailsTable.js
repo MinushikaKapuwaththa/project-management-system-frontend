@@ -4,30 +4,35 @@ export default function ProjectDashboardDetailsTable() {
   return (
     <table class="table">
       <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
-        </tr>
+        
       </thead>
       <tbody>
         <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
+          <th scope="row">client</th>
+          <td>ABC Company</td>
+          
         </tr>
         <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
+          <th scope="row">Start Date</th>
+          <td>2023/11/02</td>
+          
         </tr>
         <tr>
-          <th scope="row">3</th>
-          <td colspan="2">Larry the Bird</td>
-          <td>@twitter</td>
+          <th scope="row">Estimated End Date</th>
+          
+          <td>2025/11/02</td>
+        </tr>
+
+        <tr>
+          <th scope="row">Project Head</th>
+          <td>Nadun Wijethunge</td>
+         
+        </tr>
+
+        <tr>
+          <th scope="row">Estimated Time</th>
+          <td>231 Hours</td>
+         
         </tr>
       </tbody>
     </table>
