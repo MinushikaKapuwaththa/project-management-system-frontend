@@ -17,14 +17,16 @@ export default function SideBar() {
        <a className="menu-item" href="/task">
          Task
        </a>
+       
        <a className="menu-item" href="/module">
          Module
-       </a>
+       </a> 
+       
        <a className="menu-item" href="/budget">
          Budget
        </a>
-       <a className="menu-item" href="/document">
-         Documents </a>
+       <a className="menu-item" href="/documents">
+         Document </a>
          <a className="menu-item" href="/project-Button">
          Button
 

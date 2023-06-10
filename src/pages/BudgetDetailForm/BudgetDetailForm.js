@@ -16,7 +16,7 @@ function BudgetDetailForm() {
   const {projectId}=useParams();
 
   const submit = () => {
-
+// post
     console.log(values)
     axios
     .post('http://localhost:5148/api/Budget',
