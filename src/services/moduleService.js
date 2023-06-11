@@ -12,3 +12,21 @@ export const getModules = async () => {
     return response;
   });
 };
+
+export const createModule = async (data) => {
+  return await axios({
+    method: "post",
+    url: "http://localhost:5148/api/Module",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: data,
+  })
+    .then((Response) => {
+      console.log(Response);
+    })
+    .catch((Error) => {
+      console.log(Error);
+    });
+};
+

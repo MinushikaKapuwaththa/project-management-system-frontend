@@ -19,7 +19,7 @@ import Projects from "./pages/project/Projects";
 
 function App() {
   return (
-    <div className="App" id="outer-container">
+    <div id="outer-container">
       <div id="NavBar">
         <Router>
           <Navbar />
