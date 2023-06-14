@@ -14,6 +14,7 @@ import ProjectTaskPage from "./pages/project/ProjectTaskPage";
 import ProjectModulePage from "./pages/project/ProjectModulePage"
 import ModuleForm from "./components/Module/ModuleForm"
 import ModuleDetailsForm from "./components/ModuleFormEdit/ModuleDetailsForm"
+import ModuleDetails from "./components/Module/ModuleDetails"
 import Projects from "./pages/project/Projects";
 
 
@@ -40,7 +41,8 @@ function App() {
             <Route path="/project-task" component={ProjectTaskPage} />
             <Route path="/project-module" component={ProjectModulePage} />
             <Route path="/moduleform" component={ModuleForm} />
-            <Route path="/moduledetailsform" component={ModuleDetailsForm}/>
+            <Route path="/moduledetailsform/:id" component={ModuleDetailsForm}/>
+           <Route path="/moduledetails" component={ModuleDetails}/>
             <Route path="/project/:name/:projectId/budget" component={BudgetPage}/>
           </Switch>
         </Router>

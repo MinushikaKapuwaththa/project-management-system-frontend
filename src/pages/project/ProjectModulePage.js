@@ -4,22 +4,33 @@ import { Link } from "react-router-dom";
 import ModuleProgressBar from "../../components/Module/ModuleProgressBar";
 import ModuleRedioButton from "../../components/Module/ModuleRedioButton";
 import { getModules } from "../../services/moduleService";
+import EastIcon from "@mui/icons-material/East";
+import EditIcon from "@mui/icons-material/Edit";
+import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import DeleteIcon from '@mui/icons-material/Delete';
+import Moment from 'react-moment';
 
 export default function ProjectModulePage() {
   const [moduleList, setmoduleList] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     getModules().then((res) => setmoduleList(res.data.result));
     console.log(moduleList);
   }, []);
 
+  const handleClickEditModule = (id) => {
+    history.push(`/moduledetailsform/${id}`);
+  };
+
   return (
-    <div>
+    <div  className="container shadow p-3 mb-5 bg-white rounded">
       <div className="M1">
-        <h1>Module</h1>
+        <h1>Modules</h1>
       </div>
 
-      <div className="container shadow p-3 mb-5 bg-white rounded">
+     
         <div className="b1">
           <Link to="moduleform">
             <button type="button" className="btn btn-primary">
@@ -44,16 +55,16 @@ export default function ProjectModulePage() {
                   Search
                 </button>
               </span>
+             <div><ModuleRedioButton/></div>
             </form>
           </div>
         </div>
-        {moduleList.map((item,index) => {
-          return (
-            <div key={index} className="row">
+        {moduleList.map((item, index) => (
+          <div key={index} className="row">
             <div className="col">
               <div>
                 <h5>
-                  <b>{item.name} </b> - {item.id}
+                  <b>{item.id} </b> - {item.name}
                 </h5>
               </div>
             </div>
@@ -63,24 +74,33 @@ export default function ProjectModulePage() {
               </div>
             </div>
             <div className="col">
-              <div>
-                stutus: <ModuleRedioButton />
-              </div>
+              <div>stutus: {item.status}</div>
             </div>
-            <div className="col">End date : {item.created}</div>
-            <div className="col">Start Date</div>
+            <div className="col"> Start date : <Moment format="YYYY/MM/DD">{item.created}</Moment></div>
+            <div className="col">End Date : <Moment format="YYYY/MM/DD">{item.endDate}</Moment></div>
             <div className="col">
-              <Link to="/moduledetailsform">
+
+              <button onClick={() => handleClickEditModule(item.id)} type="button" class="btn btn-link">
+                <EditIcon color="action" />
+              </button>
+
+
+              <Link to="/moduledetails">
                 <button type="button" class="btn btn-link">
-                  Edit
+                  <h2>
+                    <EastIcon color="action"/>
+                  </h2>
                 </button>
               </Link>
+              <DeleteIcon color="action" />
+
             </div>
-            <hr/>
+            <div>
+              <hr />
+            </div>
           </div>
-          )
-        })}
+        ))}
       </div>
-</div>
-);
+    
+  );
 }
