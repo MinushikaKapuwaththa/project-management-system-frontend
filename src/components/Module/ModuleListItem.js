@@ -26,6 +26,18 @@ function ModuleListItem() {
         <label htmlFor="service"></label>
         {serviceList.map((singleService, index) => (
           <div key={index} className="services">
+            <div className="second-division">
+              {serviceList.length > 1 && index > 0 && (
+                <button
+                  type="button"
+                  onClick={() => handleServiceRemove(index)}
+                  className="btn btn-danger"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+
             <div className="first-division">
               <input
                 name="service"
@@ -35,27 +47,19 @@ function ModuleListItem() {
                 onChange={(e) => handleServiceChange(e, index)}
                 required
               />
-              {serviceList.length - 1 === index && serviceList.length < 4 && (
+
+              {serviceList.length - 1 === index && serviceList.length < 100 && (
                 <button variant="dark"
                   type="button"
                   onClick={handleServiceAdd}
-                  className="add-btn"
+                  className="btn btn-primary"
+                  
                 >
-                  <span>+ Add</span>
+                  + Add
                 </button>
               )}
             </div>
-            <div className="second-division">
-              {serviceList.length !== 1 && (
-                <button
-                  type="button"
-                  onClick={() => handleServiceRemove(index)}
-                  className="remove-btn"
-                >
-                  <span>Remove</span>
-                </button>
-              )}
-            </div>
+            
           </div>
         ))}
       </div>

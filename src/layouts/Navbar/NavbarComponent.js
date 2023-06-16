@@ -1,32 +1,32 @@
 import React, { useState } from "react";
-import {Navbar, Nav,Button} from 'react-bootstrap';
+import {Navbar, Nav} from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 // import Profile from "./Profile";
 
 
 function NavbarComponent() {
-  const [click, setClick] = useState(false);
-  const [dropdown, setDropdown] = useState(false);
+  // const [click, setClick] = useState(false);
+  // const [dropdown, setDropdown] = useState(false);
 
-  const handleClick = () => setClick(!click);
-  const closeMobileMenu = () => setClick(false);
+  // const handleClick = () => setClick(!click);
+  // const closeMobileMenu = () => setClick(false);
 
-  const onMouseEnter = () => {
-    if (window.innerWidth < 960) {
-      setDropdown(false);
-    } else {
-      setDropdown(true);
-    }
-  };
+  // const onMouseEnter = () => {
+  //   if (window.innerWidth < 960) {
+  //     setDropdown(false);
+  //   } else {
+  //     setDropdown(true);
+  //   }
+  // };
 
-  const onMouseLeave = () => {
-    if (window.innerWidth < 960) {
-      setDropdown(false);
-    } else {
-      setDropdown(false);
-    }
-  };
+  // const onMouseLeave = () => {
+  //   if (window.innerWidth < 960) {
+  //     setDropdown(false);
+  //   } else {
+  //     setDropdown(false);
+  //   }
+  // };
      
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -46,9 +46,9 @@ function NavbarComponent() {
             <Nav.Link href="/ourteam">Our Team</Nav.Link>
              
           </Nav>
-          <Nav>
+          {/* <Nav>
             <Button href="/create">Create</Button>{" "}
-          </Nav>
+          </Nav> */}
         </Navbar.Collapse>
       </Container> 
     </Navbar>

@@ -109,9 +109,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-
-
-
 export default function Document(props) {
   const [documents, setDocuments] = useState(null);
   const [allDocuments, setAllDocuments] = useState(null);

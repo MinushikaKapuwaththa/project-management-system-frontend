@@ -11,11 +11,12 @@ import Create from "./pages/create/Create";
 import ProjectsHome from "./pages/project/ProjectsHomePage";
 import ProjectRequirementPage from "./pages/project/ProjectRequirementPage";
 import ProjectTaskPage from "./pages/project/ProjectTaskPage";
-import ProjectModulePage from "./pages/project/ProjectModulePage";
-import ModuleForm from "./components/ModuleForm//ModuleForm"
-import ModuleDetailsForm from "./components/ModuleForm/ModuleDetailsForm"
+import ProjectModulePage from "./pages/project/ProjectModulePage"
+import ModuleForm from "./components/Module/ModuleForm"
+import ModuleDetailsForm from "./components/ModuleFormEdit/ModuleDetailsForm"
 import Projects from "./pages/project/Projects";
 import Document from "./pages/documents/Document";
+
 
 function App() {
   return (
