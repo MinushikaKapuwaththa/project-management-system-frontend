@@ -3,7 +3,7 @@ import "./ProjectModulePage.css";
 import { Link } from "react-router-dom";
 import ModuleProgressBar from "../../components/Module/ModuleProgressBar";
 import ModuleRedioButton from "../../components/Module/ModuleRedioButton";
-import { getModules } from "../../services/moduleService";
+import { getModules,deleteModule } from "../../services/moduleService";
 import EastIcon from "@mui/icons-material/East";
 import EditIcon from "@mui/icons-material/Edit";
 import { useHistory } from "react-router-dom";
@@ -17,12 +17,20 @@ export default function ProjectModulePage() {
 
   useEffect(() => {
     getModules().then((res) => setmoduleList(res.data.result));
-    // console.log(moduleList); 
+     console.log(moduleList); 
   }, []);
 
   const handleClickEditModule = (id) => {
     history.push(`/moduledetailsform/${id}`);
   };
+
+  const handleClickDeleteModule=(module)=>{
+    module.tasks=[];
+    console.log(module)
+    deleteModule(module).then(
+      window.location.reload()
+    )
+  }
 
   return (
     <div  className="container shadow p-3 mb-5 bg-white rounded">
@@ -90,7 +98,10 @@ export default function ProjectModulePage() {
                   </h2>
                 </button>
               </Link>
+             
+              <button  onClick={()=> handleClickDeleteModule(item)}  type="button" class="btn btn-link">
               <DeleteIcon color="action" />
+              </button>
 
             </div>
             <div>
