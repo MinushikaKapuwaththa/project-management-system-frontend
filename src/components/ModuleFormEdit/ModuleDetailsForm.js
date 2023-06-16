@@ -42,7 +42,6 @@ export default function ModuleDetailsForm() {
       endDate: enddate,
       tasks: [],
     };
-    debugger;
     updateModule(data).then(() => {
       history.push("/project-module");
     });
@@ -51,13 +50,13 @@ export default function ModuleDetailsForm() {
   useEffect(() => {
     getModulesByID(id).then((res) => {
       const _data = res.data.result;
-      _data.startDate = _data.startDate.split("T")[0];
+      console.log(_data)
+      _data.startDate = _data.startDate;
       setModule(_data);
       setdescription(res.data.result.description);
       setpriority(res.data.result.priority);
-      setenddate(res.data.result.endDate.split("T")[0]);
+      setenddate(res.data.result.endDate);
       console.log(res.data.result);
-      debugger;
     });
   }, []);
 
