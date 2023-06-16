@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { createModule } from "../../services/moduleService";
+import { useHistory } from "react-router-dom";
+
 
 export default function ModuleForm() {
   const [name, setName] = useState("");
@@ -15,6 +17,8 @@ export default function ModuleForm() {
   const [startdateError, setStartdateError] = useState("");
   const [enddate, setenddate] = useState("");
   const [enddateError, setEnddateError] = useState("");
+
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,7 +79,9 @@ export default function ModuleForm() {
         startDate: startdate,
         endDate: enddate,
       };
-      createModule(data);
+      createModule(data).then(() => {
+        history.push("/project-module");
+      });;
     } else return false;
   };
 

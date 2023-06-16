@@ -59,5 +59,22 @@ export const updateModule = async (data) => {
     });
 };
 
+export const deleteModule = async (data) => {
+  return await axios({
+    method: "delete",
+    url: "http://localhost:5148/api/Module",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: data, 
+  })
+    .then((Response) => {
+      console.log(Response);
+    })
+    .catch((Error) => {
+      console.log(Error);
+    });
+};
+
 
 

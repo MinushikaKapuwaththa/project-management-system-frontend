@@ -3,69 +3,63 @@ import Form from "react-bootstrap/Form";
 import ModuleListItem from "../Module/ModuleListItem";
 import { useState, useEffect } from "react";
 import { updateModule, getModulesByID } from "../../services/moduleService";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 export default function ModuleDetailsForm() {
   const [description, setdescription] = useState("");
   const [priority, setpriority] = useState("");
   const [enddate, setenddate] = useState("");
   const [module, setModule] = useState({});
-  const [errors,setErrors]= useState("");
+  const [errorDescription, setErrorDescription] = useState("");
+  const [errorPriority, setErrorPriority] = useState("");
+
   const { id } = useParams();
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
-debugger;
-     // Validate the form
-     const validationErrors = validateForm();
-     if (Object.keys(validationErrors).length > 0) {
-       setErrors(validationErrors);
-       return;
-     }
+
+    if (!description && !priority) {
+      setErrorDescription("Description is required");
+      setErrorPriority("Priority is required");
+      return;
+    } else {
+      setErrorDescription("");
+      setErrorPriority("");
+    }
 
     var data = {
-      created: "2023-06-13T06:36:43.565Z",
-      updated: "2023-06-13T06:36:43.565Z",
-      isDeleted: false,
-      deleted: "2023-06-13T06:36:43.565Z",
+      created: module.created,
+      updated: module.updated,
+      isDeleted: module.isDeleted,
+      deleted: module.deleted,
       id: Number(id),
-      status: "string",
-      name: "string",
+      status: module.status,
+      name: module.name,
       description: description,
       priority: priority,
-      startDate: "2023-06-13T06:36:43.565Z",
+      startDate: module.startDate,
       endDate: enddate,
       tasks: [],
     };
-    updateModule(data);
+    debugger;
+    updateModule(data).then(() => {
+      history.push("/project-module");
+    });
   };
 
   useEffect(() => {
     getModulesByID(id).then((res) => {
-      setModule(res.data.result);
+      const _data = res.data.result;
+      _data.startDate = _data.startDate.split("T")[0];
+      setModule(_data);
+      setdescription(res.data.result.description);
+      setpriority(res.data.result.priority);
+      setenddate(res.data.result.endDate.split("T")[0]);
       console.log(res.data.result);
+      debugger;
     });
   }, []);
-
-  const validateForm = () => {
-    const errors = {};
-
-    if (!description.trim()) {
-      errors.description = "Description is required";
-    }
-
-    if (!priority.trim()) {
-      errors.priority = "Priority is required";
-    }
-
-    if (!enddate) {
-      errors.enddate = "End Date is required";
-    }
-
-    return errors;
-  };
-
 
   return (
     <div className="container shadow p-3 mb-5 bg-light rounded">
@@ -99,12 +93,15 @@ debugger;
           <label htmlFor="description">Description</label>
           <input
             type="text"
-            defaultValue={module.description}
+            value={description}
+            // defaultValue={module.description}
             className="form-control"
             placeholder="description"
             onChange={(e) => setdescription(e.target.value)}
           />
-           {errors.description && <div className="invalid-feedback">{errors.description}</div>}
+          {errorDescription && (
+            <small className="text-danger">{errorDescription}</small>
+          )}
         </div>
 
         <div className="form-group">
@@ -116,30 +113,35 @@ debugger;
             defaultValue={module.priority}
             onChange={(e) => setpriority(e.target.value)}
           />
-         {errors.priority && <div className="invalid-feedback">{errors.priority}</div>} 
+          {errorPriority && (
+            <small className="text-danger">{errorPriority}</small>
+          )}
         </div>
 
         <div className="form-group">
-          <label htmlFor="name">Start Date</label>
+          <label htmlFor="startDate">Start Date</label>
           <input
-            type="text"
-            defaultValue={module.startDate}
+            type="date"
+            value={module.startDate}
             className="form-control"
-            id="name"
+            id="startDate"
             readOnly="true"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="name">End Date</label>
+          <label htmlFor="endDate">End Date</label>
           <input
             type="date"
             value={enddate}
-            defaultValue={module.endDate}
             className="form-control"
-            id="name"
-            onChange={(e) => setenddate(e.target.value)}
+            id="endDate"
+            onChange={(e) => {
+              debugger;
+              setenddate(e.target.value);
+            }}
           />
-           {errors.enddate && <div className="invalid-feedback">{errors.enddate}</div>}
+          {/* {console.log(enddate)}
+          <input type="date" value={enddate} /> */}
         </div>
 
         <button type="submit" className="btn btn-primary">

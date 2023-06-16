@@ -6,7 +6,6 @@ import ModuleRedioButton from "../../components/Module/ModuleRedioButton";
 import { getModules } from "../../services/moduleService";
 import EastIcon from "@mui/icons-material/East";
 import EditIcon from "@mui/icons-material/Edit";
-import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Moment from 'react-moment';
@@ -15,9 +14,10 @@ export default function ProjectModulePage() {
   const [moduleList, setmoduleList] = useState([]);
   const history = useHistory();
 
+
   useEffect(() => {
     getModules().then((res) => setmoduleList(res.data.result));
-    console.log(moduleList);
+    // console.log(moduleList); 
   }, []);
 
   const handleClickEditModule = (id) => {
@@ -29,8 +29,6 @@ export default function ProjectModulePage() {
       <div className="M1">
         <h1>Modules</h1>
       </div>
-
-     
         <div className="b1">
           <Link to="moduleform">
             <button type="button" className="btn btn-primary">
@@ -99,7 +97,9 @@ export default function ProjectModulePage() {
               <hr />
             </div>
           </div>
+          
         ))}
+        
       </div>
     
   );

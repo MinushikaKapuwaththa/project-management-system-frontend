@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getModules } from "../../services/moduleService";
 import "./ModuleDetails.css";
+import Moment from 'react-moment';
 
 
 function ModuleDetails() {
@@ -36,19 +37,14 @@ function ModuleDetails() {
                     <th>Description</th>
                     <td>{item.description}</td>
                   </tr>
-                  <tr>
-                    <th></th>
-                    <td>{item.description}</td>
-                  </tr>
-
-
+                 
                 <tr>
                   <th> Start Date</th>
-                  <td>{item.startDate}</td>
+                  <td><Moment format="YYYY/MM/DD">{item.startDate}</Moment></td>
                 </tr>
                 <tr>
                   <th>End Date</th>
-                  <td>{item.endDate}</td>
+                  <td><Moment format="YYYY/MM/DD">{item.endDate}</Moment></td>
                 </tr>
                 </table>
               <hr />
