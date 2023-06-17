@@ -5,35 +5,35 @@ const client = axios.create({
 });
 
 export async function saveProjectData(data) {
-    await client.post('/Project', data)
+    await client.post('/projects', data)
     .then((response) => {
         return response
     })
 }
 
 export async function getProjects() {
-   return await client.get('/Project')
+   return await client.get('/projects')
     .then((response) => {
         return response
     })
 }
 
 export async function getProject(projectId) {
-    return await client.get(`/Project/${projectId}`)
+    return await client.get(`/projects/${projectId}`)
      .then((response) => {
          return response
      })
  }
 
 export async function deleteProject(projectId) {
-    await client.delete(`/Project/${projectId}`)
+    await client.delete(`/projects/${projectId}`)
     .then((response) => {
         return response
     })
 }
 
 export async function updateProjectData(projectId, data) {
-    await client.put(`/Project/${projectId}`, data)
+    await client.put(`/projects/${projectId}`, data)
     .then((response) => {
         return response
     })
@@ -76,16 +76,17 @@ export async function updateCompanyData(companyId, data) {
     })
 }
 
+
 ///Documents
 export async function uploadDocument(data) {
-    await client.post('/Documents', data)
+    await client.post('/documents', data)
     .then((response) => {
         return response
     })
 }
 
 export async function getDocuments() {
-    return await client.get('/Documents')
+    return await client.get('/documents')
      .then((response) => {
          return response
      })
@@ -94,7 +95,7 @@ export async function getDocuments() {
  //Download Document
  export async function downloadDocument(documentId){
    return axios({
-        url: `http://localhost:5148/api/Documents/${documentId}`,
+        url: `http://localhost:5148/api/documents/${documentId}`,
         method: 'GET',
         responseType: 'blob',
     }).then((response) => {
@@ -103,14 +104,14 @@ export async function getDocuments() {
  }
 
  export async function deleteDocument(documentId) {
-    await client.delete(`/Documents/${documentId}`)
+    await client.delete(`/documents/${documentId}`)
     .then((response) => {
         return response
     })
 }
 
 export async function getProjectDataForDropdown() {
-    return await client.get('/Project/GetProjectsForDropdown')
+    return await client.get('/projects/GetProjectsForDropdown')
      .then((response) => {
          return response
      })
