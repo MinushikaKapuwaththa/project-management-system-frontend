@@ -33,7 +33,7 @@ function Sidebar() {
         <SidebarMenu.Nav>
           <SidebarMenu.Nav.Link>
             <SidebarMenu.Nav.Icon>
-              {/* Submenu item icon */}
+            <Link to={`/project/projectmanagement%20system/3/budget`}>/Budget</Link>
             </SidebarMenu.Nav.Icon>
             <SidebarMenu.Nav.Title>
               {/* Submenu item title */}

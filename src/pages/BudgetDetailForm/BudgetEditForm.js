@@ -18,7 +18,7 @@ function BudgetDetailForm() {
 
     console.log(values)
     axios
-    .post('http://localhost:5148/api/Budget',
+    .put('http://localhost:5148/api/Budget/update',
     {
       projectId:values.projectId,
       Received:0, 
@@ -48,23 +48,24 @@ function BudgetDetailForm() {
   
   useEffect(()=>{
     axios
-    .get(`http://localhost:5148/api/Project/${projectId}`)
+    .get(`http://localhost:5148/api/Budget/ProjectId/${projectId}`)
     .then (
       Response=>{
         console.log(Response.data.result)
-        setValues(values =>({ ...values, "projectName":Response.data.result.name,"estimatetime":Response.data.result.estimatetime,"actualtime":Response.data.result.actualtime,"projectId":Response.data.result.id}));
+        setValues(values =>({ ...values, "projectName":Response.data.result.Name,"projectId":Response.data.result.projectId,"cost":Response.data.result.totalBudget,"price":Response.data.result.actualcost}));
+       
     })
     .catch(
       Error=> {
         console.log(Error)
     })
-  },[])
+  },[])     
 
   return (
     <div className="App">
       <Form onSubmit={handleSubmit}>
            <div style={{ paddingTop: "20px" }}>
-          <h3 className="text-center"> Create Budget</h3>
+          <h3 className="text-center"> Edit Budget Form</h3>
         </div>
         <div className="container shadow p-1000 t-1000 b-1000 w-50 mb-3 bg-light text-dark rounded ">
         <div className="row">

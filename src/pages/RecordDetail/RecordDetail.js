@@ -17,6 +17,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 function RecordDetail() {
   const { path } = useRouteMatch();
   const {projectId}=useParams();
+  const [clientId,setClientId]=useState("");
   const history = useHistory();
   const [issueInvoice,setIssueInvoice]=useState(false);
   const [invoiceData,setInvoiceData]=useState({
@@ -28,7 +29,6 @@ function RecordDetail() {
     address: "Lanka Safety Equipment, \n No 23A,\n Pagoda Road,\n Nugegoda,\nSri Lanka\n\n",
     client:"Client: Lanka Safety Equipment\n\n",
     projectName:"Invoice for Website Development & Hosting",
-
     due_date: "26-11-2021",
     companyID: "10001",
     companyName: "xyz company",
@@ -41,12 +41,16 @@ function RecordDetail() {
         }
     ]
 })
+ 
   useEffect(()=>{
     axios
     .get(`http://localhost:5148/api/Project/${projectId}`)
     .then (
       Response=>{
-        setValues(values => ({ ...values, "projectId":Response.data.result.id,"projectName":Response.data.result.name }))
+        console.log(Response)
+        setClientId(Response.data.result.cliendId)
+        setValues(values => ({ ...values, "projectId":Response.data.result.id, "projectName":Response.data.result.name,
+ }))
     })
     .catch(
       Error=> {
@@ -54,12 +58,37 @@ function RecordDetail() {
     })
   },[])
 
+  useEffect(()=>{
+    axios
+    .get(`http://localhost:5148/api/Budget/ProjectId/${projectId}`)
+    .then (
+      Response=>{
+        setValues(values => ({ ...values, "cost":Response.data.result.totalBudget,"yetToReceive":Response.data.result.yetToReceive }))
+    })
+    .catch(
+      Error=> {
+        console.log(Error)
+    })
+  },[])
+  useEffect(()=>{
+    axios
+    .get(`http://localhost:5148/api/ClientCompany/Id/${clientId}`)
+    .then (
+      Response=>{
+        console.log(Response)
+        setValues(values => ({ ...values, "address":Response.data.result.CompanyAddress,"client":Response.data.result.CompanyName }))
+    })
+    .catch(
+      Error=> {
+        console.log(Error)
+    })
+  },[clientId])
   const submit = () => {
     
     axios
     .post('http://localhost:5148/api/Payment',
     {
-      Paidby:values.clientId,
+      Paidby:clientId.toString(),
       amount:values.Amount,
       attachment:values.attachment,
       PaymentType:"cash",
@@ -75,12 +104,31 @@ function RecordDetail() {
             "trans_date":Response.data.result.created,
             "client":Response.data.result.paydby,
             "projectName":values.projectName,
-            items: [
+            "address" :values.address,
+          items: [
               {
                   sno: 1,
-                  desc: values.projectName,
-                  amount:Response.data.result.amount
-              }
+                  desc: values.projectName +" cost",
+                  amount:values.cost
+              },
+              {
+                sno: "",
+                desc: "Total cost",
+                amount:values.cost
+            },{
+              sno: "",
+              desc: `Yet to be Received`,
+              amount:values.yetToReceive
+          },
+            {
+              sno: "",
+              desc: `Payment Received (${Response.data.result.created}) ${Response.data.result.id}`,
+              amount:values.Amount
+          },{
+            sno: "",
+            desc: `Due Amount`,
+            amount:(values.yetToReceive-values.Amount)
+        }
             ]
 
            }))
@@ -108,11 +156,18 @@ function RecordDetail() {
       <Route exact path={path}>
       <div className="App">
       <Form onSubmit={handleSubmit}>
+      <div style={{ paddingTop: "20px" }}>
+          <h3 className="text-center"> Create Payment</h3>
+        </div>
+
+      <div className="container shadow p-10 t-10 b-10 w-50 mb-3 bg-light text-dark rounded ">
+      <div className="row">
+     <div className="col">
       <Form.Group
-          className="project-input"
+          className="project-input,mb-3 w-75 text-left"
           controlId="exampleForm.ControlInput1"
-        >
-          <Form.Label>project Name</Form.Label>
+        > 
+          <Form.Label >project Name</Form.Label>
           <Form.Control
             type="text"
             name="projectName"
@@ -126,7 +181,9 @@ function RecordDetail() {
             </p>
           )}
         </Form.Group>
-        <Form.Group className="projectid-input">
+        </div>
+        <div className="col">
+        <Form.Group className="projectid-input,mb-3 w-75 text-left">
         <Form.Label>Project ID </Form.Label>
         <Form.Control
             type="text"
@@ -141,13 +198,16 @@ function RecordDetail() {
               </p>
             )}
         </Form.Group>
-      <Form.Group className="clientId-input">
+        </div>
+        </div>
+      <Form.Group className="clientId-input,mb-3 w-50 text-left"style={{margin:"20px 0 " }}>
         <Form.Label>Client ID  </Form.Label>
           <Form.Control 
            type="text"
            name="clientId"
            onChange={handleChange}
-           value={values.clientId|| ""}
+           value={clientId|| ""}
+           readOnly={true}
            aria-label="Amount (to the nearest Rupeels)" />  
         {errors.clientId && (
               <p className="help danger" style={{ color: "red" }}>
@@ -155,7 +215,7 @@ function RecordDetail() {
               </p>
             )}
         </Form.Group>       
-        <Form.Group className="amount-input">
+        <Form.Group className="amount-input,mb-3 w-50 text-left">
         <Form.Label>Amount </Form.Label>
         <InputGroup controlId="exampleForm.ControlInput1">
           <Form.Control 
@@ -172,7 +232,7 @@ function RecordDetail() {
               </p>
             )}
     </Form.Group>
-      <Form.Group className="date-input">
+      <Form.Group className="date-input,mb-3 w-50 text-left"style={{margin:"20px 0 " }}>
         <Form.Label>Date</Form.Label>
          <Form.Group controlId="dob">
           <Form.Control  
@@ -188,21 +248,23 @@ function RecordDetail() {
             )}
          </Form.Group>
      </Form.Group>
-        <Form.Group className="record-input">
+        <Form.Group className="record-input,mb-3 w-50 text-left"style={{margin:"20px 0 " }}>
           <Form.Label>Recorded By</Form.Label>
           <Form.Control 
             type="text"
             name="record"
             onChange={handleChange}
             value={values.record || ""}/>
-        </Form.Group>
+       
         {errors.record && (
-              <p className="help danger" style={{ color: "red" }}>
+              <p className="help danger" style={{ color: "red"}}>
                 {errors.record}
               </p>
             )}
-        <Form.Group  style={{width:"20%",padding: "10px" }}  controlId="formFile" className="mb-3">
-         <Form.Label style={{ width:"20%",padding: "10px" }}>attachment</Form.Label>
+             </Form.Group>
+             
+        <Form.Group  style={{width:"20%",padding: "1px" }}  controlId="formFile" className="mb-3 w-50 text-left">
+         <Form.Label style={{ width:"20%",padding: "1px" }}>attachment</Form.Label>
           <Form.Control 
               type="file"
               accept=".pdf"
@@ -213,16 +275,21 @@ function RecordDetail() {
               <p className="help danger" style={{ color: "red" }}>
                 {errors.attachment}
               </p>
-            )}
+            )} 
       </Form.Group>
-      <Button className="me-3 float-end"style={{ width: "190px", height: "50px", margin: "10px"  }}type="submit"> Add </Button>
-     <Button  className="me-3 float-end" style={{ width: "100px", height: "50px", margin: "10px" }} type="reset">Cancel</Button>               
+      <div className="ma"style={{ bottom: "0px", right: "10px"}}>
+      <Button className="btn btn-primary"style={{ width: "150px", height: "50px", margin: "10px"}}type="submit"> Add </Button>
+     <Button  className="btn btn-primary" style={{ width: "100px", height: "50px", margin: "10px" }} type="reset">Cancel</Button>    
+       </div>       
+     </div>
       </Form>
        </div>
       </Route>
       <Route path={`${path}/invoice`}>
         <Invoice invoiceData={invoiceData}/>
-      </Route>
+        </Route>
+      
+     
     </Switch>
     
   );

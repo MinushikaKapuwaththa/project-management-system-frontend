@@ -3,14 +3,15 @@ import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
     titleContainer: {
-        marginTop: 24,
+        marginTop: 0,
     },
     reportTitle: {
-        color: '#3778C2',
-        letterSpacing: 4,
-        fontSize: 25,
+        color: 'black',
+        letterSpacing: 0,
+        lineHeight: 0.5,
+        fontSize: 17,
         textAlign: 'center',
-        textTransform: 'uppercase',
+        textTransform: 'Sentence case',
     }
 });
 

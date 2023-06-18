@@ -5,26 +5,33 @@ import InvoiceNo from "./InvoiceNo";
 import BillTo from "./BillTo";
 import InvoiceThankYouMsg from "./InvoiceThankYouMsg";
 import InvoiceItemsTable from "./InvoiceItemsTable";
-import logo from "./logo1.png"
+import logo from "./Picture1.png"
 
 const styles = StyleSheet.create({
     page: {
-        backgroundColor: '#fff',
-        fontFamily: 'Helvetica',
-        fontSize: 11,
-        paddingTop: 30,
-        paddingLeft: 50,
-        paddingRight: 50,
-        lineHeight: 1.5,
-        flexDirection: 'column',
+      backgroundColor: '#fff',
+      fontFamily: 'Helvetica',
+      fontSize: 11,
+      paddingTop: 0,
+      paddingBottom:0,
+      paddingLeft: 50,
+      paddingRight:50,
+      lineHeight: 1.5,
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      width: 595, // A4 width in points (1 point = 1/72 inch)
+  height: 842,
     },
     logo: {
-        width:'50px',
-        height: 'auto',
-        float: "left"
+        position:'relative' ,
+        top: 0,
+      
+       
+
+        
     },
-   
-});
+  });
+  
 
 const PdfDocument = ({ invoicedata }) => {
     return (
@@ -34,7 +41,7 @@ const PdfDocument = ({ invoicedata }) => {
                 <Image style={styles.logo} src={logo} />
                 <InvoiceNo invoice={invoicedata} />
                 <BillTo invoice={invoicedata} />
-                <InvoiceTitle title={'Invoice'} />
+                <u> <b><InvoiceTitle title={'Invoice for'+invoicedata.projectName} /></b> </u>
                 <InvoiceItemsTable invoice={invoicedata} />
                 <InvoiceThankYouMsg />
             </Page>

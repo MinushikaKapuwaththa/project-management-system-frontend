@@ -20,6 +20,15 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import SideBar from "./SideBar";
 import { getProjects } from "../../services/projectService";
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+
+
+
+
+
+
+
 
 // Add SearchBar
 const Search = styled("div")(({ theme }) => ({
@@ -438,7 +447,7 @@ function Project() {
                                 Please provide a Name.
                               </Form.Control.Feedback>
                             </Form.Group>
-                          </Row>
+                          </Row>  
 
                           <br />
                           <Form.Group className="mb-3">

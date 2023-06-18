@@ -1,40 +1,42 @@
 .project-input{
-  width: 70%;
+  width: 50%;
   padding: 10px;
+  
 }
 .id-input{
-  width: 30%;
+ 
+  width: 50%;
   padding: 10px;
 }
 .projectid-input{
-  width: 30%;
+  width: 50%;
   padding: 10px;
 }
 .clientId-input{
-  width: 30%;
+  width: 50%;
   padding: 10px;
 }
 .date-input{
-  width: 30%;
+  width: 50%;
   padding: 10px;
 }
 .date-input{
-  width: 20%;
+  width: 50%;
   padding: 10px;
 }
 .amount-input{
-  width: 20%;
+  width: 50%;
   padding: 10px;
 }
 .record-input{
-  width: 20%;
+  width: 50%;
   padding: 10px;
 }
 .attach-input{
-  width: 20%;
+  width: 50%;
   padding: 10px;
 }
 .mb-3{
-  width: 20%;
+  width: 50%;
   padding: 10px;
 }

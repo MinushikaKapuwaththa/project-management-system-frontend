@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
 
 const InvoiceTableRow = ({ items }) => {
     const rows = items&&items.map((item,index) =>
-        <View style={styles.row} key={item.sno.toString()}>
-            <Text style={styles.s}>{index}</Text>
+        <View style={styles.row} key={index}>
+            <Text style={styles.s}>{item.sno.toString()}</Text>
             <Text style={styles.description}>{item.desc}</Text>
             <Text style={styles.amount}>{item.amount}</Text>
         </View>

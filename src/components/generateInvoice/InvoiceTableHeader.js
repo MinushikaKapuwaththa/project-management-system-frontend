@@ -12,6 +12,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 24,
         textAlign: 'center',
+        width: '120%',
+       
         fontStyle: 'bold',
         flexGrow: 1,
     },
@@ -21,11 +23,12 @@ const styles = StyleSheet.create({
         
     },
     description: {
-        width: '45%',
+        width: '60%',
         borderRightWidth: 1,
     },
     amount: {
-        width: '45%'
+        width: '20%',
+          
     },
    
 });

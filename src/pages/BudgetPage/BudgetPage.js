@@ -13,9 +13,10 @@ import BudgetDetailForm from "../BudgetDetailForm/BudgetDetailForm";
 import RecordDetail from "../RecordDetail/RecordDetail";
 import "./BudgetPage.css";
 import SideBar from "../project/SideBar";
-
+import Loading from "../../common/Loading/Loading";
 
 function BudgetPage() {
+  const [lgShow, setLgShow] = useState(false)
   const { path } = useRouteMatch();
   const progress1 =useRef();
   const progress2=useRef();
@@ -25,10 +26,11 @@ const [payments,setPayments]=useState([])
 const[price,setprice]=useState(0)
 const[Received,setReceived]=useState(0)
 const[RealCost,setRealCost]=useState(0)
-const[EstimatedCost,setEstimatedCost]=useState()
+const[EstimatedCost,setEstimatedCost]=useState();
 const [role,setRole]=useState("admin");
+const [loading ,setLoading]=useState(false);
 useEffect(()=>{
-  
+  setLoading(true);
   axios
   .get(`http://localhost:5148/api/Budget/ProjectId/${projectId}`)
   .then ( 
@@ -49,10 +51,16 @@ useEffect(()=>{
   .then(
     Response=>{
         setPayments(Response.data.result);
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000);
     })
     .catch(
       Error=> {
         console.log(Error)
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000);
     })
 },[])
 
@@ -76,7 +84,7 @@ useEffect(() => {
 
   return (
     <>
-    <SideBar />
+    {loading?(<Loading/>):(<><SideBar />
     <Switch>
        <Route exact path={path}>
        <div className="App">
@@ -86,7 +94,8 @@ useEffect(() => {
       <p style={{fontSize:"20px",font:"inter",fontWeight:600, margin:"1.2rem"}}>Budget</p>
       {
         role=="admin"?(<Link to={`/project/${name}/${projectId}/budget/BudgetDetailForm`}>
-        <Button variant="primary" style={{margin:"10px",backgroundColor:"#305995" ,width:"fit-content"}}>+Add Details</Button>
+
+        <Button variant="primary" onClick={() => setLgShow(true)} style={{margin:"10px",backgroundColor:"#305995" ,width:"fit-content"}}>+Add Details</Button>
         </Link>):null
       }
     </div>
@@ -214,7 +223,8 @@ useEffect(() => {
     </Route>         
       <Route path={`${path}/RecordDetail`} component={RecordDetail}/>
       <Route path={`${path}/BudgetDetailForm`} component={BudgetDetailForm}/>
-    </Switch>
+    </Switch></>)}
+    
     </>
     
     

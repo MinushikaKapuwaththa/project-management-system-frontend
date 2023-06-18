@@ -12,17 +12,17 @@ const styles = StyleSheet.create({
        
     },
     reportTitle: {
-        color: '#3778C2',
-        letterSpacing: 4,
-        fontSize: 25,
-        textAlign: 'center',
-        textTransform: 'uppercase',
+        color: 'black',
+        letterSpacing: 0,
+        fontSize: 12,
+        textAlign: 'Align Left',
+        textTransform: 'Sentence case',
     }
 });
 
 const InvoiceItemsTable = ({ invoice }) => (
     <View style={styles.tableContainer}>
-        <Text style={styles.reportTitle}>CSSSDSSDS </Text>
+        <Text style={styles.reportTitle}>Given below are the invoice details.</Text>
         <InvoiceTableHeader />
         <InvoiceTableRow items={invoice.items} />
     </View>
