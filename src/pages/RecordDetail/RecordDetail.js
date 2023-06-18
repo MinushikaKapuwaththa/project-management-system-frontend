@@ -82,7 +82,8 @@ function RecordDetail() {
     .get(`http://localhost:5148/api/ClientCompany/Id/${clientId}`)
     .then (
       Response=>{
-        setValues(values => ({ ...values, "address":Response.data.result.CompanyAddress,"client":Response.data.result.CompanyName }))
+        console.log(Response)
+        setValues(values => ({ ...values, "address":Response.data.result.companyAddress,"client":Response.data.result.companyName }))
     })
     .catch(
       Error=> {
@@ -102,13 +103,13 @@ function RecordDetail() {
     }
     ).then (
       Response=>{
-        console.log(Response)
+        console.log(values)
         setInvoiceData(
           invoiceData => 
           ({ ...invoiceData, 
             "invoice_no":Response.data.result.id,
             "trans_date":Response.data.result.created,
-            "client":Response.data.result.paydby,
+            "client":values.client,
             "projectName":values.projectName,
             "address" :values.address,
           items: [

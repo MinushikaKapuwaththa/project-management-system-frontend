@@ -41,7 +41,7 @@ const PdfDocument = ({ invoicedata }) => {
                 <Image style={styles.logo} src={logo} />
                 <InvoiceNo invoice={invoicedata} />
                 <BillTo invoice={invoicedata} />
-                <u> <b><InvoiceTitle title={'Invoice for'+invoicedata.projectName} /></b> </u>
+                <u> <b><InvoiceTitle title={'Invoice for '+invoicedata.projectName} /></b> </u>
                 <InvoiceItemsTable invoice={invoicedata} />
                 <InvoiceThankYouMsg />
             </Page>
