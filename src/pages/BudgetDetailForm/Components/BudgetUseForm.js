@@ -22,13 +22,12 @@ const BudgetUseForm = (callback,validate) => {
   const handleChange = (event) => {
     event.persist();
     if(event.target.name=="EstimatedHourlyRate"){
-      setValues(values => ({ ...values, "cost": event.target.value*values.estimatetime,"price": event.target.value*values.estimatetime+values.profit||0 }));
+      setValues(values => ({ ...values, "cost": parseInt(event.target.value)*parseInt(values.estimatetime),"price": event.target.value*values.estimatetime+values.profit||0 }));
       setValues(values => ({ ...values, "price":values.cost+values.profit }));
     }else if(event.target.name=="profit"){
       setValues(values =>({ ...values, "price": parseInt(values.cost)+ parseInt( event.target.value)}));
     }
     setValues(values => ({ ...values, [event.target.name]: event.target.value }));
-
   };
 
   return {

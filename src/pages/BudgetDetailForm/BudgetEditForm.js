@@ -8,34 +8,49 @@ import BudgetUseForm from "./Components/BudgetUseForm";
 import axios from 'axios';
 import "./BudgetDetailForm.css";
 import { useParams } from "react-router-dom";
-import Modal from "react-bootstrap/Modal";
+import Swal from "sweetalert2";
+import Loading from "../../common/Loading/Loading";
+import { useHistory } from "react-router-dom";
 
-function BudgetDetailForm() {
-  const [lgShow, setLgShow] = useState(false)
-  const {projectId}=useParams();
+
+function BudgetEditForm() {
+  const [loading,setLoading]=useState(false);
+  const {projectId,name}=useParams();
+  const history=useHistory()
 
   const submit = () => {
-
-    console.log(values)
+    setLoading(true);
     axios
     .put('http://localhost:5148/api/Budget/update',
     {
-      projectId:values.projectId,
-      Received:0, 
-      yetToReceive:values.price,
-      actualcost: values.actualtime*values.EstimatedHourlyRate,
-      hourlyCost:values.EstimatedHourlyRate,
-      plannedcost: values.cost,
-      totalBudget:values.price,
-     
+      "id": values.id,
+      "projectId": values.projectId,
+      "totalBudget": values.price,
+      "hourlyCost": values.EstimatedHourlyRate,
+      "actualcost": values.Actualcost,
+      "plannedcost": values.cost,
+      "received": 0,
+      "yetToReceive": values.price
     })
     .then (
-      Response=>{ 
-        console.log(Response)
+      Response=>{
+        Swal.fire({
+          icon: "success",
+          title: "Done",
+          text: "Budget Successfully Edited!",
+        }); 
+        setLoading(false)
+        history.push(`/project/${name}/${projectId}/budget`)
     })
     .catch(
       Error=> {
         console.log(Error)
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
+        setLoading(false);
     })
   };
   const { values,setValues, handleChange, handleSubmit, errors } = BudgetUseForm(
@@ -43,26 +58,40 @@ function BudgetDetailForm() {
     validate
   );
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   
   useEffect(()=>{
+    setLoading(true);
     axios
-    .get(`http://localhost:5148/api/Budget/ProjectId/${projectId}`)
+    .get(`http://localhost:5148/api/Project/${projectId}`)
     .then (
       Response=>{
-        console.log(Response.data.result)
-        setValues(values =>({ ...values, "projectName":Response.data.result.Name,"projectId":Response.data.result.projectId,"cost":Response.data.result.totalBudget,"price":Response.data.result.actualcost}));
-       
+        setValues(values =>({ ...values, "projectName":Response.data.result.name,"estimatetime":Response.data.result.estimatetime,"actualtime":Response.data.result.actualtime}));
     })
     .catch(
       Error=> {
         console.log(Error)
     })
-  },[])     
+
+    axios
+    .get(`http://localhost:5148/api/Budget/ProjectId/${projectId}`)
+    .then (
+      Response=>{
+        setValues(values =>({ ...values,"id":Response.data.result.id,"projectId":Response.data.result.projectId,"cost":Response.data.result.plannedcost,"price":Response.data.result.totalBudget,"profit":Response.data.result.totalBudget-Response.data.result.plannedcost,"EstimatedHourlyRate":parseFloat(Response.data.result.plannedcost/values.estimatetime),"Actualcost":Response.data.result.Actualcost}));
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000);
+    })
+    .catch(
+      Error=> {
+        console.log(Error)
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000);
+    })
+  },[]) 
 
   return (
-    <div className="App">
+    <>{loading ? (<Loading/>):(<div className="App">
       <Form onSubmit={handleSubmit}>
            <div style={{ paddingTop: "20px" }}>
           <h3 className="text-center"> Edit Budget Form</h3>
@@ -74,7 +103,7 @@ function BudgetDetailForm() {
           className="project-input,,mb-3 w-75 text-left"
           controlId="exampleForm.ControlInput1"
         >
-          <Form.Label>project Name</Form.Label>
+          <Form.Label>Project Name</Form.Label>
           <Form.Control
             type="text"
             name="projectName"
@@ -93,7 +122,7 @@ function BudgetDetailForm() {
           className="projectid-input,,mb-3 w-75 text-left"
           controlId="exampleForm.ControlInput1"
         >
-          <Form.Label>project ID</Form.Label>
+          <Form.Label>Project ID</Form.Label>
           <Form.Control
             type="text"
             name="projectId"
@@ -211,14 +240,16 @@ function BudgetDetailForm() {
           )}
          
           <div className="ma"style={{ bottom: "0px", left: "10px"}}>
-            <Button className="btn btn-primary" style={{ width: "100px", height: "50px", margin: "10px"}}type="submit"> Add </Button>
+            <Button className="btn btn-primary" style={{ width: "100px", height: "50px", margin: "10px"}}type="submit"> Edit </Button>
           <Button className="btn btn-primary" style={{ width: "100px", height: "50px", margin: "10px"  }} type="reset"> Cancel </Button>
            </div>
          </Form.Group>
         </div>
       </Form>
-    </div>
+    </div>)}</>
+    
+    
   );
 }
 
-export default BudgetDetailForm;
+export default BudgetEditForm;

@@ -15,19 +15,21 @@ import SideBar from "../project/SideBar";
 import Loading from "../../common/Loading/Loading";
 
 import DataTable from 'react-data-table-component'
+import BudgetEditForm from "../BudgetDetailForm/BudgetEditForm";
 
 function BudgetPage() {
-  const [lgShow, setLgShow] = useState(false)
   const { path } = useRouteMatch();
   const {projectId,name }=useParams();
 
 const [payments,setPayments]=useState([])
 const[price,setprice]=useState(0)
 const[Received,setReceived]=useState(0)
+const[yetToReceived,setYetToReceived]=useState(0)
 const[RealCost,setRealCost]=useState(0)
-const[EstimatedCost,setEstimatedCost]=useState();
+const[EstimatedCost,setEstimatedCost]=useState(0);
 const [role,setRole]=useState("admin");
 const [loading ,setLoading]=useState(false);
+const [budget ,setBudget]=useState(null);
 
 const columns = [
   {
@@ -65,8 +67,13 @@ const columns = [
     const blobUrl = URL.createObjectURL(blob);
     
     window.open(blobUrl, '_blank');
-  }}>open</Button>)
+  }}>Open Attachment</Button>)
 
+},
+{
+    name: 'Action',
+    selector: row => row.id,
+    cell: (row, index) => (<Button variant="light" >Edit Payment</Button>)
 },
 ];
 
@@ -92,7 +99,8 @@ useEffect(()=>{
   .get(`http://localhost:5148/api/Budget/ProjectId/${projectId}`)
   .then ( 
     Response=>{
-      console.log(Response.data)
+     setYetToReceived(Response.data.result.yetToReceive)
+      setBudget(Response.data.result)
       setprice(Response.data.result.totalBudget)
       setReceived(Response.data.result.received )
       setRealCost(Response.data.result.actualcost)
@@ -132,20 +140,20 @@ useEffect(()=>{
     <Link to={"/project"}>Projects</Link><Link to={`/project/${name}/${projectId}`}>/{name}({projectId})</Link><Link to={`/project/${name}/${projectId}/budget`}>/Budget</Link>
     <div style={{display:"flex",justifyContent:"space-between" ,alignItems:"baseline"}} >
       <p style={{fontSize:"20px",font:"inter",fontWeight:600, margin:"1.2rem"}}>Budget</p>
-      {
-        role=="admin"?(<Link to={`/project/${name}/${projectId}/budget/BudgetDetailForm`}>
-
-        <Button variant="primary" onClick={() => setLgShow(true)} style={{margin:"10px",backgroundColor:"#305995" ,width:"fit-content"}}>+Add Details</Button>
-        </Link>):null
-      }
+      {!budget ? (<Link to={`/project/${name}/${projectId}/budget/BudgetDetailForm`}>
+        <Button variant="primary" style={{margin:"10px",backgroundColor:"#305995" ,width:"fit-content"}}>Add Budget</Button>
+        </Link>):(<Link to={`/project/${name}/${projectId}/budget/BudgetEditForm`}>
+        <Button variant="primary" style={{margin:"10px",backgroundColor:"#305995" ,width:"fit-content"}}>Edit Budget</Button>
+        </Link>)}
     </div>
     <InputGroup className="progress-group"style={{justifyContent:"space-between" }} >
       <Col className="projectId-input" sm={8} >
         <div class="p-2 ">
-          <ProgressBar className="progress1" variant="danger" style={{backgroundColor:"#848484",width: "80%"}} now={((Received/price)*100)} />
+          <ProgressBar className="progress1 bg-secondary" variant="danger" style={{width: "80%"}} now={((Received/price)*100)} />
         </div>
         <div class="p-2 ">
-        <ProgressBar className="progress2" variant="success" style={{backgroundColor:"#848484",width: "80%" }} now={((RealCost/price)*100)} />  
+          {RealCost<price?(<ProgressBar className="progress2 bg-secondary" variant="success" style={{width: "80%" }} now={((RealCost/price)*100)} />):(<ProgressBar className="progress2 bg-success" variant="secondary" style={{width: "80%" }} now={((price/RealCost)*100)} />)} 
+         
 </div>
         
       </Col>
@@ -154,9 +162,9 @@ useEffect(()=>{
           <Card.Body>
               <div>
                 <ul>
-                  <li><div className="rectrangel-1" ></div><p className="text-1">Price</p></li>
+                  <li><div className="rectrangel-1 bg-secondary" ></div><p className="text-1">Price</p></li>
                   <li> <div className="rectrangel-2 bg-danger" > </div><p  className="text-2">Received Payments</p></li>
-                  <li> <div className="rectrangel-3 bg-success"> </div><p  className="text-3"></p>Actual Cost</li>
+                  <li> <div className="rectrangel-3 bg-success"> </div><p  className="text-3"></p>Real Cost</li>
                 </ul>
               </div>
             </Card.Body>
@@ -209,9 +217,10 @@ useEffect(()=>{
         </Card>
       </Col>
       <Col className="d-flex justify-content-center">
-      <Link to={`/project/${name}/${projectId}/budget/RecordDetail`}> 
-      <Button variant="primary" style={{margin:"10px",backgroundColor:"#305995" ,width:"fit-content"}}>+Add Record</Button>
-      </Link>
+        {yetToReceived!=0?(<Link to={`/project/${name}/${projectId}/budget/RecordDetail`}> 
+      <Button variant="primary" style={{margin:"10px",backgroundColor:"#305995" ,width:"fit-content"}}>Add Payment</Button>
+      </Link>):null}
+      
       </Col>
        
     </InputGroup>
@@ -233,6 +242,7 @@ useEffect(()=>{
     </Route>         
       <Route path={`${path}/RecordDetail`} component={RecordDetail}/>
       <Route path={`${path}/BudgetDetailForm`} component={BudgetDetailForm}/>
+      <Route path={`${path}/BudgetEditForm`} component={BudgetEditForm}/>
     </Switch></>)}
     
     </>

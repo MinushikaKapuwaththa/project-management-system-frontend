@@ -12,11 +12,13 @@ import Invoice from "../Invoice/Invoice";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import { Document, Page, pdfjs } from 'react-pdf';
+import Loading from "../../common/Loading/Loading";
 
 
 function RecordDetail() {
   const { path } = useRouteMatch();
   const {projectId}=useParams();
+  const [loading ,setLoading]=useState(false);
   const [clientId,setClientId]=useState("");
   const history = useHistory();
   const [issueInvoice,setIssueInvoice]=useState(false);
@@ -43,11 +45,11 @@ function RecordDetail() {
 })
  
   useEffect(()=>{
+    setLoading(true)
     axios
     .get(`http://localhost:5148/api/Project/${projectId}`)
     .then (
       Response=>{
-        console.log(Response)
         setClientId(Response.data.result.cliendId)
         setValues(values => ({ ...values, "projectId":Response.data.result.id, "projectName":Response.data.result.name,
  }))
@@ -56,26 +58,30 @@ function RecordDetail() {
       Error=> {
         console.log(Error)
     })
-  },[])
 
-  useEffect(()=>{
     axios
     .get(`http://localhost:5148/api/Budget/ProjectId/${projectId}`)
     .then (
       Response=>{
         setValues(values => ({ ...values, "cost":Response.data.result.totalBudget,"yetToReceive":Response.data.result.yetToReceive }))
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000);
     })
     .catch(
       Error=> {
         console.log(Error)
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000);
     })
   },[])
+
   useEffect(()=>{
-    axios
+    clientId&&axios
     .get(`http://localhost:5148/api/ClientCompany/Id/${clientId}`)
     .then (
       Response=>{
-        console.log(Response)
         setValues(values => ({ ...values, "address":Response.data.result.CompanyAddress,"client":Response.data.result.CompanyName }))
     })
     .catch(
@@ -152,7 +158,7 @@ function RecordDetail() {
 
 
   return (
-    <Switch>
+    <>{loading?(<Loading/>):(<Switch>
       <Route exact path={path}>
       <div className="App">
       <Form onSubmit={handleSubmit}>
@@ -167,7 +173,7 @@ function RecordDetail() {
           className="project-input,mb-3 w-75 text-left"
           controlId="exampleForm.ControlInput1"
         > 
-          <Form.Label >project Name</Form.Label>
+          <Form.Label >Project Name</Form.Label>
           <Form.Control
             type="text"
             name="projectName"
@@ -288,10 +294,7 @@ function RecordDetail() {
       <Route path={`${path}/invoice`}>
         <Invoice invoiceData={invoiceData}/>
         </Route>
-      
-     
-    </Switch>
-    
+    </Switch>)}</>
   );
 }
 export default RecordDetail;

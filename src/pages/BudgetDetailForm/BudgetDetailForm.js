@@ -8,15 +8,18 @@ import BudgetUseForm from "./Components/BudgetUseForm";
 import axios from 'axios';
 import "./BudgetDetailForm.css";
 import { useParams } from "react-router-dom";
-import Modal from "react-bootstrap/Modal";
-
+import Swal from "sweetalert2";
+import Loading from "../../common/Loading/Loading";
+import { useHistory } from "react-router-dom";
 function BudgetDetailForm() {
-  const [lgShow, setLgShow] = useState(false)
-  const {projectId}=useParams();
+  const [lgShow, setLgShow] = useState(false);
+  const [loading ,setLoading]=useState(false);
+  const {projectId,name}=useParams();
+  const history =useHistory();
 
   const submit = () => {
 
-    console.log(values)
+    setLoading(true);
     axios
     .post('http://localhost:5148/api/Budget',
     {
@@ -31,11 +34,23 @@ function BudgetDetailForm() {
     })
     .then (
       Response=>{ 
-        console.log(Response)
+        Swal.fire({
+          icon: "success",
+          title: "Done",
+          text: "Budget Successfully Added!",
+        });
+        setLoading(false);
+        history.push(`/project/${name}/${projectId}/budget`)
     })
     .catch(
       Error=> {
         console.log(Error)
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
+        setLoading(false);
     })
   };
   const { values,setValues, handleChange, handleSubmit, errors } = BudgetUseForm(
@@ -47,21 +62,28 @@ function BudgetDetailForm() {
   const handleShow = () => setShow(true);
   
   useEffect(()=>{
+    setLoading(true);
     axios
     .get(`http://localhost:5148/api/Project/${projectId}`)
     .then (
       Response=>{
         console.log(Response.data.result)
         setValues(values =>({ ...values, "projectName":Response.data.result.name,"estimatetime":Response.data.result.estimatetime,"actualtime":Response.data.result.actualtime,"projectId":Response.data.result.id}));
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000);
     })
     .catch(
       Error=> {
         console.log(Error)
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000);
     })
   },[])
 
   return (
-    <div className="App">
+    <>{loading?(<Loading/>):(<div className="App">
       <Form onSubmit={handleSubmit}>
            <div style={{ paddingTop: "20px" }}>
           <h3 className="text-center"> Create Budget</h3>
@@ -73,7 +95,7 @@ function BudgetDetailForm() {
           className="project-input,,mb-3 w-75 text-left"
           controlId="exampleForm.ControlInput1"
         >
-          <Form.Label>project Name</Form.Label>
+          <Form.Label>Project Name</Form.Label>
           <Form.Control
             type="text"
             name="projectName"
@@ -92,7 +114,7 @@ function BudgetDetailForm() {
           className="projectid-input,,mb-3 w-75 text-left"
           controlId="exampleForm.ControlInput1"
         >
-          <Form.Label>project ID</Form.Label>
+          <Form.Label>Project ID</Form.Label>
           <Form.Control
             type="text"
             name="projectId"
@@ -216,7 +238,8 @@ function BudgetDetailForm() {
          </Form.Group>
         </div>
       </Form>
-    </div>
+    </div>)}</>
+    
   );
 }
 
