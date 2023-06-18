@@ -19,8 +19,6 @@ import DataTable from 'react-data-table-component'
 function BudgetPage() {
   const [lgShow, setLgShow] = useState(false)
   const { path } = useRouteMatch();
-  const progress1 =useRef();
-  const progress2=useRef();
   const {projectId,name }=useParams();
 
 const [payments,setPayments]=useState([])
@@ -77,7 +75,7 @@ const tableCustomStyles = {
     style: {
       fontSize: '15px',
       fontWeight: 'bold',
-      backgroundColor: 'rgb(5, 33, 75)',
+      backgroundColor: '#305995',
       color:"white"
     },
   },
@@ -123,23 +121,6 @@ useEffect(()=>{
     })
 },[])
 
-useEffect(() => {
-  if (progress1.current) {
-    const inner = progress1.current.querySelector(".progress-bar");
-    if ( inner ) {
-     inner.style.backgroundColor = "#621212";
-    }
-  }
- if (progress2.current){
-  const inner = progress2.current.querySelector(".progress-bar");
-  if ( inner ) {
-   inner.style.backgroundColor = "#15AD2D";
-  }
- }
-  
-
-}, [progress1],[progress2]);
-
 
   return (
     <>
@@ -161,10 +142,10 @@ useEffect(() => {
     <InputGroup className="progress-group"style={{justifyContent:"space-between" }} >
       <Col className="projectId-input" sm={8} >
         <div class="p-2 ">
-          <ProgressBar className="progress1" ref={progress1} style={{backgroundColor:"#848484",width: "80%"}} now={((Received/price)*100)} />
+          <ProgressBar className="progress1" variant="danger" style={{backgroundColor:"#848484",width: "80%"}} now={((Received/price)*100)} />
         </div>
         <div class="p-2 ">
-        <ProgressBar className="progress2" ref={progress2} style={{backgroundColor:"#848484",width: "80%" }} now={((RealCost/price)*100)} />  
+        <ProgressBar className="progress2" variant="success" style={{backgroundColor:"#848484",width: "80%" }} now={((RealCost/price)*100)} />  
 </div>
         
       </Col>
@@ -174,8 +155,8 @@ useEffect(() => {
               <div>
                 <ul>
                   <li><div className="rectrangel-1" ></div><p className="text-1">Price</p></li>
-                  <li> <div className="rectrangel-2" > </div><p  className="text-2">Received Payments</p></li>
-                  <li> <div className="rectrangel-3" > </div><p  className="text-3"></p>Actual Cost</li>
+                  <li> <div className="rectrangel-2 bg-danger" > </div><p  className="text-2">Received Payments</p></li>
+                  <li> <div className="rectrangel-3 bg-success"> </div><p  className="text-3"></p>Actual Cost</li>
                 </ul>
               </div>
             </Card.Body>
