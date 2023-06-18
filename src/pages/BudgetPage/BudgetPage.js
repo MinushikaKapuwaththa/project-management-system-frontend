@@ -2,7 +2,6 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
-import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { useRef,useEffect } from "react";
 import { useState } from "react";
@@ -14,6 +13,8 @@ import RecordDetail from "../RecordDetail/RecordDetail";
 import "./BudgetPage.css";
 import SideBar from "../project/SideBar";
 import Loading from "../../common/Loading/Loading";
+
+import DataTable from 'react-data-table-component'
 
 function BudgetPage() {
   const [lgShow, setLgShow] = useState(false)
@@ -29,6 +30,64 @@ const[RealCost,setRealCost]=useState(0)
 const[EstimatedCost,setEstimatedCost]=useState();
 const [role,setRole]=useState("admin");
 const [loading ,setLoading]=useState(false);
+
+const columns = [
+  {
+      name: 'Created',
+      selector: row => row.created.split("T")[0],
+  },
+  {
+      name: 'Paid Person',
+      selector: row => row.paidby,
+  },
+  {
+    name: 'Amount(LKR)',
+    selector: row => row.amount,
+},
+{
+  name: 'Attachment',
+  selector: row => row.attachment,
+  cell: (row, index) => (<Button variant="light" onClick={()=>{
+    const byteCharacters = atob(row.attachment.substr(`data:application/pdf;base64,`.length));
+    const byteArrays = [];
+    
+    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+        const slice = byteCharacters.slice(offset, offset + 1024);
+    
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+    
+        const byteArray = new Uint8Array(byteNumbers);
+    
+        byteArrays.push(byteArray);
+    }
+    const blob = new Blob(byteArrays, {type: "application/pdf"});
+    const blobUrl = URL.createObjectURL(blob);
+    
+    window.open(blobUrl, '_blank');
+  }}>open</Button>)
+
+},
+];
+
+const tableCustomStyles = {
+  headCells: {
+    style: {
+      fontSize: '15px',
+      fontWeight: 'bold',
+      backgroundColor: 'rgb(5, 33, 75)',
+      color:"white"
+    },
+  },
+  rows: {
+        style: {
+          justifyContent: 'center',
+            backgroundColor: '#D3D3D3'
+        },
+    },
+}
 useEffect(()=>{
   setLoading(true);
   axios
@@ -176,47 +235,17 @@ useEffect(() => {
        
     </InputGroup>
     
-    <div class="p-2 ">
-    <Table style={{borderRadius:'12px',overflow: 'hidden',margin:"1.2rem"}}striped bordered hover>
-    <thead >
-      <tr style={{backgroundColor:" #05214B" }}>
-        <th style={{color:"white"}}>Date</th>
-        <th style={{color:"white"}}>Paid Person</th>
-        <th style={{color:"white"}}>Amount(LKR)</th>
-        <th style={{color:"white"}}>attachment</th>
-      </tr>
-    </thead>
-    <tbody>
-      {payments.map((payment,index)=>
-      <tr key={index}>
-        <td>{payment.created.split("T")[0]}</td>
-        <td>{payment.paidby}</td>
-        <td>{payment.amount}</td>
-        <td><button onClick={()=>{
-          const byteCharacters = atob(payment.attachment.substr(`data:application/pdf;base64,`.length));
-          const byteArrays = [];
-          
-          for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
-              const slice = byteCharacters.slice(offset, offset + 1024);
-          
-              const byteNumbers = new Array(slice.length);
-              for (let i = 0; i < slice.length; i++) {
-                  byteNumbers[i] = slice.charCodeAt(i);
-              }
-          
-              const byteArray = new Uint8Array(byteNumbers);
-          
-              byteArrays.push(byteArray);
-          }
-          const blob = new Blob(byteArrays, {type: "application/pdf"});
-          const blobUrl = URL.createObjectURL(blob);
-          
-          window.open(blobUrl, '_blank');
-        }}>open</button></td>
-      </tr>
-       )}
-      </tbody>
-  </Table>
+    <div class="p-2 table">
+    <DataTable
+    style={{borderRadius:"10px"}}
+            columns={columns}
+            data={payments}
+            pagination={true}
+            progressPending={loading}
+            progressComponent={<><Loading/></>}
+            customStyles={tableCustomStyles}
+        />
+    
   </div>
   </div>
 
