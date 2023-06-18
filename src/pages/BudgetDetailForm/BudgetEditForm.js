@@ -240,7 +240,7 @@ function BudgetEditForm() {
           )}
          
           <div className="ma"style={{ bottom: "0px", left: "10px"}}>
-            <Button className="btn btn-primary" style={{ width: "100px", height: "50px", margin: "10px"}}type="submit"> Edit </Button>
+            <Button className="btn btn-primary" style={{ width: "100px", height: "50px", margin: "10px"}}type="submit"> Update </Button>
           <Button className="btn btn-primary" style={{ width: "100px", height: "50px", margin: "10px"  }} type="reset"> Cancel </Button>
            </div>
          </Form.Group>

@@ -16,6 +16,7 @@ import Loading from "../../common/Loading/Loading";
 
 import DataTable from 'react-data-table-component'
 import BudgetEditForm from "../BudgetDetailForm/BudgetEditForm";
+import RecordDetailEdit from "../RecordDetail/RecordDetailEdit";
 
 function BudgetPage() {
   const { path } = useRouteMatch();
@@ -27,7 +28,6 @@ const[Received,setReceived]=useState(0)
 const[yetToReceived,setYetToReceived]=useState(0)
 const[RealCost,setRealCost]=useState(0)
 const[EstimatedCost,setEstimatedCost]=useState(0);
-const [role,setRole]=useState("admin");
 const [loading ,setLoading]=useState(false);
 const [budget ,setBudget]=useState(null);
 
@@ -73,7 +73,9 @@ const columns = [
 {
     name: 'Action',
     selector: row => row.id,
-    cell: (row, index) => (<Button variant="light" >Edit Payment</Button>)
+    cell: (row, index) => (<Link to={`/project/${name}/${projectId}/budget/RecordDetailEdit/${row.id}`}> 
+      <Button variant="primary" style={{margin:"10px",backgroundColor:"#305995" ,width:"fit-content"}}>Edit</Button>
+      </Link>)
 },
 ];
 
@@ -242,7 +244,8 @@ useEffect(()=>{
     </Route>         
       <Route path={`${path}/RecordDetail`} component={RecordDetail}/>
       <Route path={`${path}/BudgetDetailForm`} component={BudgetDetailForm}/>
-      <Route path={`${path}/BudgetEditForm`} component={BudgetEditForm}/>
+      <Route path={`${path}/BudgetDetailEditForm`} component={BudgetEditForm}/>
+      <Route path={`${path}/RecordDetailEdit/:id`} component={RecordDetailEdit}/>
     </Switch></>)}
     
     </>
