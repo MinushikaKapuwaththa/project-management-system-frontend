@@ -8,6 +8,7 @@ import { useDropzone } from 'react-dropzone';
 import * as yup from 'yup';
 import * as formik from 'formik';
 import { uploadDocument, getProjectDataForDropdown } from "../../services/G3APIService";
+import { getClientDataForDropdown } from '../../services/G3APIService';
 
 const baseStyle = {
   flex: 1,
@@ -43,6 +44,7 @@ const rejectStyle = {
 export default function Create(props) {
   const [isPending, setIsPending] = useState(false);
   const [projectData, setProjectData] = useState(null);
+  const [clientData, setClientData] = useState(null);
 
   useEffect(() => {
     getProjectDataForDropdown().then((response) => {
@@ -50,6 +52,11 @@ export default function Create(props) {
     });
   }, [props.projectId])
 
+  useEffect(()=>{
+    getClientDataForDropdown().then((response) => {
+      setClientData(response.data)
+    });
+  }, []);
 
   const { Formik } = formik;
 
@@ -120,7 +127,7 @@ export default function Create(props) {
   const schema = yup.object().shape({
     Name: yup.string().required(),
     Type: yup.string().required(),
-    ClientName: yup.string().required(),
+    ClientId: yup.string().required(),
     Company: yup.string().required(),
     ProjectId:yup.string().required()
   });
@@ -128,7 +135,7 @@ export default function Create(props) {
   var initialValues = {
     Name: "",
     Type: "1",
-    ClientName: "",
+    ClientId: "",
     Company: "",
     ProjectId:""
   }
@@ -148,7 +155,7 @@ export default function Create(props) {
     const formData = new FormData();
     formData.append('Name', data.Name);
     formData.append('Type', +data.Type);
-    formData.append('ClientName', data.ClientName);
+    formData.append('ClientId', data.ClientId);
     formData.append('Company', data.Company);
     formData.append('ProjectId', data.ProjectId);
     formData.append('File', acceptedFiles[0]);
@@ -178,7 +185,7 @@ export default function Create(props) {
     <Form noValidate onSubmit={handleSubmit}>
       <Row>
        <Form.Group as={Col} md="4" controlId="validationCustom01" >
-          <Form.Label className='required-field'>Name</Form.Label>
+          <Form.Label className='required-field'>Name<span className="text-danger">*</span></Form.Label>
           <Form.Control type="text"
               name="Name"
               value={values.Name}
@@ -191,7 +198,7 @@ export default function Create(props) {
         </Form.Group>
       
         <Form.Group as={Col} md="4" controlId='validationCustom04'>
-             <Form.Label className='required-field'>Type</Form.Label>
+             <Form.Label className='required-field'>Type<span className="text-danger">*</span></Form.Label>
                 <Form.Select name="Type" value={values.Type} onChange={handleChange}>
                       <option value ='1'>SRS</option>
                       <option value='2'>Requirements</option>
@@ -199,23 +206,47 @@ export default function Create(props) {
                       <option value='4'>Others</option>
                 </Form.Select> 
         </Form.Group> 
-        <Form.Group as={Col} md="4" controlId="validationCustom03">
-          <Form.Label className='required-field'>Client Name</Form.Label>
-          <Form.Control name="ClientName"
-              value={values.ClientName}
-              isValid={touched.ClientName && !errors.ClientName}
-              isInvalid={errors.ClientName && touched.ClientName}
-              onChange={handleChange} />
-          <Form.Control.Feedback type="invalid">
-            Please provide Client Name.
-          </Form.Control.Feedback>
-        </Form.Group>
+        </Row>
+        
+        <Row>
+ 
+             <Form.Group
+                  as={Col}
+                  md="6"
+                  controlId="validationCustom04"
+                  className="mb-3"
+                >
+                  <Form.Label className="required-field">Client Name<span className="text-danger">*</span>
+                  </Form.Label>
+                  <Form.Select
+                    name="ClientId"
+                    value={values.ClientId}
+                    className={checkValid(touched.ClientId,errors.ClientId)}
+                    isInvalid={touched.ClientId && errors.ClientId}
+                    onBlur={handleBlur}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}             
+                  >
+                    <option>-Select Client-</option>
+                    {clientData && clientData.map((client) => (
+                        <option value={client.value} key={client.value}>
+                          {client.name}
+                        </option>
+                      ))}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    client is required
+                  </Form.Control.Feedback>
+                  
+                </Form.Group>
 
-        </Row><br/>
+
+        </Row>
 
       <Row>
         <Form.Group as={Col} md="6" controlId="validationCustom03">
-          <Form.Label className='required-field'>Company</Form.Label>
+          <Form.Label className='required-field'>Company<span className="text-danger">*</span></Form.Label>
           <Form.Control name="Company"
               value={values.Company}
               isValid={touched.Company && !errors.Company}
@@ -227,11 +258,10 @@ export default function Create(props) {
         </Form.Group>
 
         <Form.Group as={Col} md="6" controlId='validationCustom04'>
-             <Form.Label className='required-field'>Project Name</Form.Label>
+             <Form.Label className='required-field'>Project Name<span className="text-danger">*</span></Form.Label>
                 <Form.Select
                  name="ProjectId" 
                  value={values.ProjectId} 
-                 //onChange={handleChange}
                  className={checkValid(touched.ProjectId,errors.ProjectId)}
                  isInvalid={touched.ProjectId && errors.ProjectId}
                  onBlur={handleBlur}
@@ -250,10 +280,11 @@ export default function Create(props) {
                   </Form.Control.Feedback>
 
         </Form.Group>
+
         </Row><br/>   
 
       <div>
-      <Form.Label className='required-field'>Files</Form.Label>
+      <Form.Label className='required-field'>Files<span className="text-danger">*</span></Form.Label>
       <div {...getRootProps({style})}>
         <input {...getInputProps()} />
         <img src={require('../../images/icons8-upload-64.png')} width='50' alt='upload-icon'/>

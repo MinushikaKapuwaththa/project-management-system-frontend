@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./companies.css";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -13,7 +14,6 @@ import { getCompany, saveCompanyData, updateCompanyData } from "../../services/G
 function AddNewCompany(props) {
   const [updatedData, setupdatedData] = useState(null);
   const [isPending, setIsPending] = useState(false);
-
   const { Formik } = formik;
 
   useEffect(() => {
@@ -52,7 +52,10 @@ function AddNewCompany(props) {
     Status: yup.string().required(),
     ContactNumber: yup.string().matches(/^[0-9]{10}$/, "Invalid phone number").required(),
     CompanyEmail: yup.string().email().required(),
-    StartDate: yup.string().nonNullable().required()
+    StartDate: yup
+      .date()
+      .max(new Date(), 'Start date must be today or a past date')
+      .required('Start date is required'),
   });
 
   var initialValues = {
@@ -84,7 +87,7 @@ function AddNewCompany(props) {
             <Form onSubmit={handleSubmit} noValidate>
               <Row>
                 <Form.Group as={Col} md="6" controlId="formGroupName" className="mb-3">
-                  <Form.Label className="required-field">Owner Name</Form.Label>
+                  <Form.Label className="required-field">Owner Name<span className="text-danger">*</span></Form.Label>
                   <Form.Control
                     type="text"
                     name="OwnerName"
@@ -92,13 +95,13 @@ function AddNewCompany(props) {
                     isValid={touched.OwnerName && !errors.OwnerName}
                     isInvalid={errors.OwnerName && touched.OwnerName}
                     onChange={handleChange} />
-                  <Form.Control.Feedback type="invalid">
+                   <Form.Control.Feedback type="invalid">
                     {errors.OwnerName}
-                  </Form.Control.Feedback>
+                  </Form.Control.Feedback> 
                 </Form.Group>
 
                 <Form.Group as={Col} md="6" controlId="formGroupEmployeeId" className="mb-3">
-                  <Form.Label className="required-field">Company Name</Form.Label>
+                  <Form.Label className="required-field">Company Name<span className="text-danger">*</span></Form.Label>
                   <Form.Control
                     type="text"
                     name="CompanyName"
@@ -113,7 +116,7 @@ function AddNewCompany(props) {
               </Row>
               <Row>
                 <Form.Group as={Col} md="6" controlId="formGroupType" className="mb-3">
-                  <Form.Label className="required-field">Status</Form.Label>
+                  <Form.Label className="required-field">Status<span className="text-danger">*</span></Form.Label>
                   <Form.Select
                     name="Status"
                     value={values.Status} onChange={handleChange}
@@ -127,7 +130,7 @@ function AddNewCompany(props) {
                 </Form.Group>
 
                 <Form.Group as={Col} md="6" controlId="contactNumber" className="mb-3">
-                  <Form.Label className="required-field">Contact Number</Form.Label>
+                  <Form.Label className="required-field">Contact Number<span className="text-danger">*</span></Form.Label>
                   <Form.Control
                     type="text"
                     name="ContactNumber"
@@ -144,7 +147,7 @@ function AddNewCompany(props) {
               </Row>
               <Row>
                 <Form.Group as={Col} md="6" controlId="formBasicEmail">
-                  <Form.Label>Company Email</Form.Label>
+                  <Form.Label>Company Email<span className="text-danger">*</span></Form.Label>
                   <Form.Control
                     type="text"
                     name="CompanyEmail"
@@ -159,11 +162,12 @@ function AddNewCompany(props) {
                 </Form.Group>
 
                 <Form.Group as={Col} md="6" controlId="formGroupStartdate">
-                  <Form.Label className="required-field">Start Date</Form.Label>
+                  <Form.Label className="required-field">Joined Date<span className="text-danger">*</span></Form.Label>
                   <DatePicker
                     id="date-picker-Startdate"
                     selected={(values.StartDate && new Date(values.StartDate)) || null}
                     dateFormat="MM/dd/yyyy"
+                   
                     className={(errors.StartDate && touched.StartDate) ? "form-control is-invalid" : 'form-control'}
                     name="StartDate"
                     onChange={val => {
@@ -171,6 +175,7 @@ function AddNewCompany(props) {
                     }}
                     isValid={touched.StartDate && !errors.StartDate}
                     isInvalid={errors.StartDate && touched.StartDate}
+                    filterDate={(date) => date.toDateString() === new Date().toDateString()} // Filter to allow only today's date
                   />
                   {(errors.StartDate && touched.StartDate) && <Form.Control.Feedback type="invalid" style={{ display: "block" }}>
                     {errors.StartDate}

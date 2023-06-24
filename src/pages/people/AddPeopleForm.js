@@ -5,24 +5,25 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import * as yup from "yup";
 import * as formik from "formik";
-import {
-  getClient,
-  saveClientData,
-  updateClientData,
-} from "../../services/G3APIService";
+import { getClient,saveClientData,updateClientData,getCompanyDataForDropdown,} from "../../services/G3APIService";
 
 function AddPeople(props) {
   const [updatedData, setupdatedData] = useState(null);
   const [isPending, setIsPending] = useState(false);
-
+  const [companyData, setCompanyData] = useState(null);
   const { Formik } = formik;
 
   useEffect(() => {
+    getCompanyDataForDropdown().then((response) => {
+      setCompanyData(response.data);
+    });
+
+
     props.personId &&
       getClient(props.personId).then((response) => {
         setupdatedData({
           ClientName: response.data.clientName,
-          Company: response.data.company,
+          CompanyId: response.data.companyId,
           ClientType: response.data.clientType,
           ContactNumber: response.data.contactNumber,
           Email: response.data.email,
@@ -49,7 +50,7 @@ function AddPeople(props) {
 
   const schema = yup.object().shape({
     ClientName: yup.string().required(),
-    Company: yup.string().required(),
+    CompanyId: yup.string().required(),
     ClientType: yup.number().required("Company type is required"),
     ContactNumber: yup.string().matches(/^[0-9]{10}$/, "Invalid phone number").required(),
     Email: yup.string().email().required(),
@@ -58,7 +59,7 @@ function AddPeople(props) {
 
   var initialValues = {
     ClientName: "",
-    Company: "",
+    CompanyId: "",
     ClientType:"" ,
     ContactNumber: "",
     Email: "",
@@ -96,10 +97,10 @@ function AddPeople(props) {
                   as={Col}
                   md="12"
                   controlId="formGroupName"
-                  className="mb-3"
+                  className="mb-4"
                 >
                   <Form.Label className="required-field">
-                    Client Name
+                    Client Name<span className="text-danger">*</span>
                   </Form.Label>
                   <Form.Control
                     type="text"
@@ -115,29 +116,38 @@ function AddPeople(props) {
                 </Form.Group>
               </Row>
               <Row>
-                <Form.Group
+
+              <Form.Group
                   as={Col}
                   md="6"
                   controlId="formGroupEmployeeId"
-                  //className="mb-3"
+                  className="mb-4"
                 >
-                  <Form.Label className="required-field">Company</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="Company"
-                    value={values.Company}
-                    isValid={touched.Company && !errors.Company}
-                    isInvalid={errors.Company && touched.Company}
-                    onChange={handleChange}
-                  />
+                  <Form.Label className="required-field">Company Name<span className="text-danger">*</span></Form.Label>
+                  <Form.Select
+                    name="CompanyId"
+                    value={values.CompanyId}
+                    className={checkValid(touched.CompanyId,errors.CompanyId)}
+                    isInvalid={touched.CompanyId && errors.CompanyId}
+                    onBlur={handleBlur}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}             
+                  >
+                    <option>-Select Company-</option>
+                    {companyData && companyData.map((company) => (
+                        <option value={company.value} key={company.value}>{company.name}</option>
+                      ))}
+                  </Form.Select>
                   <Form.Control.Feedback type="invalid">
-                    {errors.Company}
+                    client is required
                   </Form.Control.Feedback>
+                  
                 </Form.Group>
 
                 <Form.Group as={Col} md="6" controlId="formGroupType">
                   <Form.Label className="required-field">
-                    Client Type
+                    Client Type<span className="text-danger">*</span>
                   </Form.Label>
                   <Form.Select
                     Name="ClientType"
@@ -146,11 +156,9 @@ function AddPeople(props) {
                     isInvalid={touched.ClientType && errors.ClientType}
                     onBlur={handleBlur}
                     onChange={(e) => {
-                      //resetForm();
                       handleChange(e);
                     }}
-                    // onChange={handleChange}
-                    // className="mb-3"
+
                   >
                     <option>-Select ClientType-</option>
                     <option value={1}>CEO</option>
@@ -169,10 +177,10 @@ function AddPeople(props) {
                   as={Col}
                   md="6"
                   controlId="contactNumber"
-                  //className="mb-3"
+                  className="mb-4"
                 >
                   <Form.Label className="required-field">
-                    Contact Number
+                    Contact Number<span className="text-danger">*</span>
                   </Form.Label>
                   <Form.Control
                     type="text"
@@ -189,7 +197,7 @@ function AddPeople(props) {
 
                 <Form.Group as={Col} md="6" controlId="formBasicEmail">
                   <Form.Label className="required-field">
-                    Email Address
+                    Email Address<span className="text-danger">*</span>
                   </Form.Label>
                   <Form.Control
                     type="text"
@@ -207,7 +215,7 @@ function AddPeople(props) {
               <Row>
               <Form.Group as={Col} md="6" controlId="formBasicEmail">
                   <Form.Label className="required-field">
-                  Country
+                  Country<span className="text-danger">*</span>
                   </Form.Label>
                   <Form.Control
                     type="text"
@@ -247,3 +255,4 @@ function AddPeople(props) {
 }
 
 export default AddPeople;
+
